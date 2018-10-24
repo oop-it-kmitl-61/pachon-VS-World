@@ -10,36 +10,30 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.brashmonkey.spriter.Player;
-
 
 public class pachon extends ApplicationAdapter {
+	private int width = 840;
+	private int height = 600;
 	SpriteBatch batch;
 	Texture img,ob1;
-	private ShapeRenderer r1,r2;
-	private  int i = 0, j = 0;
+
+	private ShapeRenderer r1,r2,r3,r4;
+	private float i = 0, j = 0;
+
+	public void setI(float i) {
+		this.i = i;
+	}
+	public void setJ(float j) {
+		this.j = j;
+	}
 	private Rectangle bounds = new Rectangle(100,100,50,50);
-	private Rectangle bounds2;
-	public ShapeRenderer getR2() {
-		r2 = new ShapeRenderer();
-		r2.begin(ShapeType.Filled);
-	    r2.setColor(Color.GREEN);
-	    r2.rect(100,100,50,50);
-	    r2.end();
-		return r2;
-	}
-	public Rectangle getBounds2(int a ,int b) {
-		bounds2 = new Rectangle(a,b,50,50);
-		return bounds2;
-	}
-	public ShapeRenderer getR1(int a,int b) {
-		r1 = new ShapeRenderer();
-		r1.begin(ShapeType.Filled);
-	    r1.setColor(Color.GREEN);
-	    r1.rect(a, b, 50, 50);
-	    r1.end();
-		return r1;
+	private Rectangle bounds3 = new Rectangle(0,300,780,50);
+	private Rectangle bounds4 = new Rectangle(490,500,350,50);
+	//private Rectangle bounds5 = new Rectangle(100,100,50,50);
+	//private Rectangle bounds6 = new Rectangle(100,100,50,50);
+	private Rectangle bounds2 ;
+	public pachon() {
+		
 	}
 	@Override
 	public void create () {
@@ -48,62 +42,91 @@ public class pachon extends ApplicationAdapter {
 		}
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-		pachon a = new pachon();
-		
+
+		if(i<0) {i=0;}
+		else if(i>height-50) {i=height-50;}
+		else if((j<0)) {j=0;}
+		else if(j>width-50 ) {j=width-50;}
 		 if(Gdx.input.isKeyPressed(Input.Keys.UP)||Gdx.input.isKeyPressed(Input.Keys.W)){
-			 if(!a.collides(a.getBounds2(j, i))) {
-				i++;
+			 if(!collides(getBounds2(j, i))) {
+				 
+				 i += 20;
 			 }
-			 else {
-				 i-=3;
+			 
+		  }
+		 i-=5;
+		 if(Gdx.input.isKeyPressed(Input.Keys.DOWN)||Gdx.input.isKeyPressed(Input.Keys.S)){
+			 if(!collides(getBounds2(j, i))) {
+				 i -= 5;
 			 }
 		  }
-		 
+		 collides(getBounds2(j, i));
 		 if(Gdx.input.isKeyPressed(Input.Keys.LEFT)||Gdx.input.isKeyPressed(Input.Keys.A)){
-			 if(!a.collides(a.getBounds2(j, i))) {
-				 j--;
-			 }
-			 else {
+			 if(!collides(getBounds2(j, i))) {
+				 j-=3;
+				 }
+		 }
+		 if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)||Gdx.input.isKeyPressed(Input.Keys.D)){
+			 if(!collides(getBounds2(j, i))) {
 				 j+=3;
 			 }
 		  }
-		 if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)||Gdx.input.isKeyPressed(Input.Keys.D)){
-			 if(!a.collides(a.getBounds2(j, i))) {
-				 j++;
-			 }
-			 else {
-				 j-=3;
-			 }
-		  }
-		 if(Gdx.input.isKeyPressed(Input.Keys.DOWN)||Gdx.input.isKeyPressed(Input.Keys.S)){
-			 if(!a.collides(a.getBounds2(j, i))) {
-				 i--;
-			 }
-			 else {
-				 i+=3;
-			 }
-		  }
-		 a.getR1(j, i);
-		 a.getBounds2(j,i);
-		 a.getR2();
+		 if(i<0) {i=0;}
+		 if(i>height-50) {i-=3;}
+		 if((j<0)) {j+=3;}
+		 if(j>width-50 ) {j-=3;}
+		 getR2();
+		 getR1(j,i);
 	
 	}
-	
+	public void getR2() {
+		r2 = new ShapeRenderer();
+		r3 = new ShapeRenderer();
+		r4 = new ShapeRenderer();
+		r2.begin(ShapeType.Filled);
+	    r2.setColor(Color.GREEN);
+	    r2.rect(100,100,50,50);
+	    r2.end();
+	    r3.begin(ShapeType.Filled);
+	    r3.setColor(Color.GREEN);
+	    r3.rect(0,300,780,50);
+	    r3.end();
+	    r4.begin(ShapeType.Filled);
+	    r4.setColor(Color.GREEN);
+	    r4.rect(490,500,350,50);
+	    r4.end();
+		
+	}
+	public Rectangle getBounds2(float j2 ,float x) {
+		
+		return bounds2 = new Rectangle(j2,x,50,50);
+	}
+	public ShapeRenderer getR1(float j2,float x) {
+		r1 = new ShapeRenderer();
+		r1.begin(ShapeType.Filled);
+	    r1.setColor(Color.GREEN);
+	    r1.rect(j2, x, 50, 50);
+	    r1.end();
+		return r1;
+	}
 	public Rectangle getBounds() {
 		return bounds;
 	}
-	public boolean collides (Rectangle player) {
-		pachon a = new pachon();
-		
-		return player.overlaps(a.getBounds());
+	public Rectangle getBounds3() {
+		return bounds3;
 	}
-	
+	public Rectangle getBounds4() {
+		return bounds4;
+	}
+	public boolean collides  (Rectangle player) {
+		if(player.overlaps(getBounds())&&player.y >= getBounds().y+40) {setI(getBounds().y+50);}
+		if(player.overlaps(getBounds3())&&player.y >= getBounds3().y+40) {setI(getBounds3().y+50);}
+		if(player.overlaps(getBounds4())&&player.y >= getBounds4().y+40) {setI(getBounds4().y+50);}
+		return player.overlaps(getBounds())||player.overlaps(getBounds3())||player.overlaps(getBounds4());
+	}
 	@Override
 	public void dispose () {
 		batch.dispose();
