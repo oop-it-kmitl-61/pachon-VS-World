@@ -48,14 +48,14 @@ public class pachon extends ApplicationAdapter {
 		ca = new OrthographicCamera();
         ca.setToOrtho(false,2000,2000);
         ca.update();
-		map = new TmxMapLoader().load("C:\\Users\\Champ\\Downloads\\test\\core\\assets\\map1.tmx");
+		map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
 		mapre = new OrthogonalTiledMapRenderer(map);
 		r1 = new ShapeRenderer();
 		r2 = new ShapeRenderer();
 		r3 = new ShapeRenderer();
 		r4 = new ShapeRenderer();
 		batch = new SpriteBatch();
-		img = new Texture("C:\\Users\\Champ\\Downloads\\test\\core\\assets\\badlogic.jpg");
+		img = new Texture("..\\core\\assets\\badlogic.jpg");
 		}
 	@Override
 	public void render () {
