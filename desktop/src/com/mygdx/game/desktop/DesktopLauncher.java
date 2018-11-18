@@ -9,6 +9,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 840;
 		config.height = 600;
+		config.backgroundFPS = 60;
+		config.foregroundFPS = 60;
 		config.title = "Pachon VS World";
 		new LwjglApplication(new pachon(), config);
 	}
