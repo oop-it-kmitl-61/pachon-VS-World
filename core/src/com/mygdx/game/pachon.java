@@ -47,9 +47,7 @@ public class pachon extends ApplicationAdapter {
         b2dr = new Box2DDebugRenderer();
 
         player = createBox(8+100, 10+48,32, 50, false);
-        createBox(100, 48, 128, 32, true);
-        createBox(200, 48, 128, 32, true);
-        createBox(300, 48, 128, 32, true);
+//        createBox(100, 48, 128, 32, true);
         
         batch = new SpriteBatch();
         tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\playerGreen_walk1.png");
@@ -57,7 +55,7 @@ public class pachon extends ApplicationAdapter {
         map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
         tmr = new OrthogonalTiledMapRenderer(map);
         
-        TiledObjectUtil.parseTileObject(world, map.getLayers().get("grass").getObjects());
+        TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
     }
 
     @Override
@@ -72,7 +70,7 @@ public class pachon extends ApplicationAdapter {
         batch.draw(tex, player.getPosition().x*PPM - (tex.getWidth()/2), player.getPosition().y*PPM - (tex.getHeight()/2));
         batch.end();
         
-        tmr.render();
+//        tmr.render();
         
         b2dr.render(world, camera.combined.scl(PPM));
 
