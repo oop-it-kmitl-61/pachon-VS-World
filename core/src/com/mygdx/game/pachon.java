@@ -72,8 +72,9 @@ public class pachon extends ApplicationAdapter {
         
         tmr.render();
         
+        if(DEBUG) {
         b2dr.render(world, camera.combined.scl(PPM));
-
+        }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
 
@@ -143,7 +144,7 @@ public class pachon extends ApplicationAdapter {
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
 
 //        pBody.createFixture(shape, 1.0f);
-//        pBody.createFixture(shape, 1.0f);
+        pBody.createFixture(shape, 0.0f);
         shape.dispose();
         return pBody;
     }

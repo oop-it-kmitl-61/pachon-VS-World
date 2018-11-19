@@ -52,7 +52,7 @@ public class TiledObjectUtil {
             BodyDef bd = new BodyDef();
             bd.type = BodyType.StaticBody;
             Body body = world.createBody(bd);
-            body.createFixture(shape, 1);
+            body.createFixture(shape, 0.0f);
 
             shape.dispose();
         }
