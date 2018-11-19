@@ -70,7 +70,7 @@ public class pachon extends ApplicationAdapter {
         batch.draw(tex, player.getPosition().x*PPM - (tex.getWidth()/2), player.getPosition().y*PPM - (tex.getHeight()/2));
         batch.end();
         
-//        tmr.render();
+        tmr.render();
         
         b2dr.render(world, camera.combined.scl(PPM));
 
@@ -142,7 +142,8 @@ public class pachon extends ApplicationAdapter {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
 
-        pBody.createFixture(shape, 1.0f);
+//        pBody.createFixture(shape, 1.0f);
+//        pBody.createFixture(shape, 1.0f);
         shape.dispose();
         return pBody;
     }
