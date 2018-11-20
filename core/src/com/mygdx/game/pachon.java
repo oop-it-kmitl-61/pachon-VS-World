@@ -20,7 +20,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import static com.mygdx.game.Constants.PPM;
 public class pachon extends ApplicationAdapter {
-	private boolean DEBUG = false;
+	private boolean DEBUG = true;
 	private final float SCALE = 2.0f;
 
     private OrthographicCamera camera;
