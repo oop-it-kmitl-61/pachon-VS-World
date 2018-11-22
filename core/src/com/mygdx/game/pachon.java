@@ -13,14 +13,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import static com.mygdx.game.Constants.PPM;
 public class pachon extends ApplicationAdapter {
-	private boolean DEBUG = true;
+	private boolean DEBUG = false;
 	private final float SCALE = 2.0f;
 
     private OrthographicCamera camera;
@@ -47,7 +43,6 @@ public class pachon extends ApplicationAdapter {
         b2dr = new Box2DDebugRenderer();
 
         player = createBox(8+100, 10+48,32, 50, false);
-//        createBox(100, 48, 128, 32, true);
         
         batch = new SpriteBatch();
         tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\playerGreen_walk1.png");
@@ -120,6 +115,12 @@ public class pachon extends ApplicationAdapter {
 
     public void cameraUpdate(float delta) {
         Vector3 position = camera.position;
+//        a + (b-1) * lerp
+//        b = target
+//        a = current camera position
+        position.x = camera.position.x + (player.getPosition().x * PPM - camera.position.x) * .1f;
+        position.y = camera.position.y + (player.getPosition().y * PPM - camera.position.y) * .1f;
+//        og camera transition
         position.x = player.getPosition().x * PPM;
         position.y = player.getPosition().y * PPM;
         camera.position.set(position);
@@ -143,7 +144,6 @@ public class pachon extends ApplicationAdapter {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
 
-//        pBody.createFixture(shape, 1.0f);
         pBody.createFixture(shape, 0.0f);
         shape.dispose();
         return pBody;
