@@ -1,11 +1,13 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,36 +17,44 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import static com.mygdx.game.Constants.PPM;
-public class pachon extends ApplicationAdapter {
-	private boolean DEBUG = false;
+
+public class pachon extends Game {
+	private boolean DEBUG = true;
 	private final float SCALE = 2.0f;
 
-    private OrthographicCamera camera;
+	protected OrthographicCamera camera;
     
     private OrthogonalTiledMapRenderer tmr;
-    private TiledMap map;
+    protected TiledMap map;
 
     private Box2DDebugRenderer b2dr;
     private World world;
     private Body player;
     
-    private SpriteBatch batch;
+    protected SpriteBatch batch;
     private Texture tex;
 
+    public BitmapFont font;
+    
     @Override
     public void create () {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
+       
         camera.setToOrtho(false, w / SCALE, h / SCALE);
-
+        
         world = new World(new Vector2(0, -9.8f), false);
         b2dr = new Box2DDebugRenderer();
-
-        player = createBox(8+100, 10+48,32, 50, false);
+        
+        player = createBox(242, 58,32, 50, false);
+//        createBox(100, 48, 128, 32, true);
         
         batch = new SpriteBatch();
+        font = new BitmapFont();
+        
+        this.setScreen(new SplashScreen(this));
         tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\playerGreen_walk1.png");
         
         map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
@@ -55,17 +65,19 @@ public class pachon extends ApplicationAdapter {
 
     @Override
     public void render() {
+    	
+    	super.render();
+    	tmr.render();
         update(Gdx.graphics.getDeltaTime());
 
         // Render
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
+        tmr.render();
         batch.begin();
         batch.draw(tex, player.getPosition().x*PPM - (tex.getWidth()/2), player.getPosition().y*PPM - (tex.getHeight()/2));
         batch.end();
         
-        tmr.render();
+        
         
         if(DEBUG) {
         b2dr.render(world, camera.combined.scl(PPM));
@@ -75,7 +87,9 @@ public class pachon extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width / SCALE, height / SCALE);
+    	camera.setToOrtho(false, width / SCALE, height / SCALE);
+    	camera.position.x = 242;
+    	camera.position.y = 150;
     }
 
     @Override
@@ -118,11 +132,23 @@ public class pachon extends ApplicationAdapter {
 //        a + (b-1) * lerp
 //        b = target
 //        a = current camera position
-        position.x = camera.position.x + (player.getPosition().x * PPM - camera.position.x) * .1f;
-        position.y = camera.position.y + (player.getPosition().y * PPM - camera.position.y) * .1f;
+//        position.x = camera.position.x + (player.getPosition().x * PPM - camera.position.x) * .1f;
+//        position.y = camera.position.y + (player.getPosition().y * PPM - camera.position.y) * .1f;
 //        og camera transition
-        position.x = player.getPosition().x * PPM;
-        position.y = player.getPosition().y * PPM;
+//        position.x = player.getPosition().x * PPM;
+//        position.y = player.getPosition().y * PPM;
+        float a,b,c;
+        a = camera.position.x;
+        b = player.getPosition().x;
+        c = player.getPosition().y;
+        if(b<(float) 7.5625) {b = (float) 7.5625;}
+        else if(b>42.404976) {b = (float) 42.404976;}
+        
+        if((a >= 242 == true)&&(a<= 1357.99)) {position.x = camera.position.x + (b * PPM - camera.position.x) * .1f;}
+        if(c<4.7732534) {c = (float) 4.7732534;}
+        else if( c>44.299213) {c = (float) 44.299213;}
+        position.y = camera.position.y + (c * PPM - camera.position.y) * .1f;;
+        System.out.println(c);
         camera.position.set(position);
 
         camera.update();
