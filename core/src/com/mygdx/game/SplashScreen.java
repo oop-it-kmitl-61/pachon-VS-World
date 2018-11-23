@@ -10,12 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class SplashScreen implements Screen {
-	private final pachon app;
+	private final Pachon app;
 	private Stage stage;
 	private Image splashImg, splashImg2;
 	private Sprite sp;
 	
-	public SplashScreen(final pachon app) {
+	public SplashScreen(final Pachon app) {
 		this.app = app;
 		this.stage = new Stage(new FitViewport(0, 0, app.camera));
 		Gdx.input.setInputProcessor(stage);
