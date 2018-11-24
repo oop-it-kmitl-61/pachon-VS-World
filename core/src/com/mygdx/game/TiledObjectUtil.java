@@ -48,7 +48,7 @@ public class TiledObjectUtil {
             else {
                 continue;
             }
-
+            
             BodyDef bd = new BodyDef();
             bd.type = BodyType.StaticBody;
             Body body = world.createBody(bd);

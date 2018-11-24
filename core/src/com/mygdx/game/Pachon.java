@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,12 +30,15 @@ public class Pachon extends Game {
     private GameStateManager gsm;
     protected SpriteBatch batch;
   
-    
+    private Music music;
     @Override
     public void create () {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-
+        music = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\music.mp3"));
+		music.setLooping(true);
+		music.setVolume(0.1f);
+		music.play();
         camera = new OrthographicCamera();       
         camera.setToOrtho(false, w / SCALE, h / SCALE);
         batch = new SpriteBatch();

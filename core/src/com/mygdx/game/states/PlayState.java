@@ -26,6 +26,7 @@ public class PlayState extends GameState{
 	private final float SCALE = 2.0f;
     private OrthogonalTiledMapRenderer tmr;
     protected TiledMap map;
+   
 
     private Box2DDebugRenderer b2dr;
     private World world;
@@ -53,6 +54,7 @@ public class PlayState extends GameState{
       pic2 = new Sprite(tex2);
       map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
       tmr = new OrthogonalTiledMapRenderer(map);
+      
       TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
 	}
 
@@ -173,5 +175,9 @@ public class PlayState extends GameState{
   public SpriteBatch getBatch() {
 	return batch;
   }
+
+
+
+
 	
 }

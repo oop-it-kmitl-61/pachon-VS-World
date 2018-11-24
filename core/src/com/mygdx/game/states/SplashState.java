@@ -18,10 +18,7 @@ public class SplashState extends GameState{
 	@Override
 	public void update(float delta) {
 		// TODO Auto-generated method stub
-		acc += delta;
-		if(acc >= 3) {
-			gsm.setState(GameStateManager.State.PLAY);
-		}
+		
 		
 	}
 
@@ -30,7 +27,11 @@ public class SplashState extends GameState{
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(1f, 1f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		if(Gdx.input.justTouched()) {
+			
+			gsm.setState(GameStateManager.State.PLAY);
+			
+		}
 	}
 
 	@Override
@@ -38,6 +39,8 @@ public class SplashState extends GameState{
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 	
 
 }
