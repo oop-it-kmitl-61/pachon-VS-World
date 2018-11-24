@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -30,8 +31,9 @@ public class PlayState extends GameState{
     private World world;
     private Body player;
     
-    protected SpriteBatch batch;
-    private Texture tex;
+    protected SpriteBatch batch,batch1;
+    private Sprite pic,pic2;
+    private Texture tex,tex2;
     public BitmapFont font;
 //    playstate like create class
 	public PlayState(GameStateManager gsm) {
@@ -40,14 +42,17 @@ public class PlayState extends GameState{
       b2dr = new Box2DDebugRenderer();
       
       player = createBox(242, 58,32, 50, false);
-      
+      camera.position.x = player.getPosition().x *PPM;
       batch = new SpriteBatch();
+      batch1 = new SpriteBatch();
       font = new BitmapFont();
       tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\playerGreen_walk1.png");
+      tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
+      pic = new Sprite(tex2);
       
+      pic2 = new Sprite(tex2);
       map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
       tmr = new OrthogonalTiledMapRenderer(map);
-      
       TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
 	}
 
@@ -55,10 +60,11 @@ public class PlayState extends GameState{
 	public void update(float delta) {
 		// TODO Auto-generated method stub
       world.step(1 / 60f, 6, 2);
-
+      
       inputUpdate(delta);
       cameraUpdate();
       tmr.setView(camera);
+      batch1.setProjectionMatrix(camera.combined);
       batch.setProjectionMatrix(camera.combined);
 	}
 
@@ -67,12 +73,18 @@ public class PlayState extends GameState{
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch1.begin();
+        batch1.draw(pic, 0, 0);
+        batch1.end();
+        batch1.begin();
+        batch1.draw(pic, 0, 1080);
+        batch1.end();
     	tmr.render();
         update(Gdx.graphics.getDeltaTime());
 
         // Render
         
-        tmr.render();
+       
         batch.begin();
         batch.draw(tex, player.getPosition().x*PPM - (tex.getWidth()/2), player.getPosition().y*PPM - (tex.getHeight()/2));
         batch.end();
@@ -92,7 +104,7 @@ public class PlayState extends GameState{
       batch.dispose();
       tmr.dispose();
       map.dispose();
-      batch.dispose();
+     
 	}
 	
 //    @Override
@@ -120,29 +132,20 @@ public class PlayState extends GameState{
     }
     public void cameraUpdate() {
         Vector3 position = camera.position;
-//        a + (b-1) * lerp
-//        b = target
-//        a = current camera position
-//        position.x = camera.position.x + (player.getPosition().x * PPM - camera.position.x) * .1f;
-//        position.y = camera.position.y + (player.getPosition().y * PPM - camera.position.y) * .1f;
+
+        float a,b,c;
+        a = camera.position.x;
+        b = player.getPosition().x;
+        c = player.getPosition().y;
+        if(b<(float) 7.5625) {b = (float) 7.5625;}
+        else if(b>42.404976) {b = (float) 42.404976;}
         
-//        og camera transition
-        position.x = player.getPosition().x * PPM;
-        position.y = player.getPosition().y * PPM;
-        
-//        float a,b,c;
-//        a = camera.position.x;
-//        b = player.getPosition().x;
-//        c = player.getPosition().y;
-//        if(b<(float) 7.5625) {b = (float) 7.5625;}
-//        else if(b>42.404976) {b = (float) 42.404976;}
-//        
-//        if((a >= 242 == true)&&(a<= 1357.99)) {position.x = camera.position.x + (b * PPM - camera.position.x) * .1f;}
-//        if(c<4.7732534) {c = (float) 4.7732534;}
-//        else if( c>44.299213) {c = (float) 44.299213;}
-//        position.y = camera.position.y + (c * PPM - camera.position.y) * .1f;;
-//        System.out.println(c);
-//        camera.position.set(position);
+        if((a >= 242 == true)&&(a<= 1357.99)) {position.x = camera.position.x + (b * PPM - camera.position.x) * .1f;}
+        if(c<4.7732534) {c = (float) 4.7732534;}
+        else if( c>44.299213) {c = (float) 44.299213;}
+        position.y = camera.position.y + (c * PPM - camera.position.y) * .1f;;
+       
+        camera.position.set(position);
 
         camera.update();
     }

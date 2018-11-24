@@ -50,6 +50,7 @@ public class Pachon extends Game {
 
     @Override
     public void resize(int width, int height) {
+
     	gsm.resize((int) (width/ SCALE), (int)(height/SCALE));
 //    	camera.setToOrtho(false, width / SCALE, height / SCALE);
 //    	camera.position.x = 242;
