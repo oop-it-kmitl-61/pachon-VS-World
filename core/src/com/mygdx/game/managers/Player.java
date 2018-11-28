@@ -16,29 +16,32 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Player {
 	private Body player;
-	private Texture tex;
+	private Texture tex,tex2;
 	private SpriteBatch batch;
 	private World world;
 	private Vector3 potition;
-	private Animation playeranimation;
-	
+	private Animation playeranimation,playeranimation2;
+	private int i =0;
 	public Player(Body player) {
 		this.player = player;
 		batch = new SpriteBatch();
 		world = new World(new Vector2(0, -9.8f), false);
+		tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\playerGreen_walk1.png");
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\walk.png");
-		playeranimation = new Animation(new TextureRegion(tex),3,1f);
+		playeranimation = new Animation(new TextureRegion(tex2),1,1f);
+		playeranimation2 = new Animation(new TextureRegion(tex),3,1f);
+		
 	}
 	public void inputUpdate(float delta) {
         int horizontalForce = 0;
-
+        i=0;
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
         	
             horizontalForce -= 1;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             horizontalForce += 1;
-            
+            i=1;
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
@@ -50,18 +53,20 @@ public class Player {
     }
 	public void update(float delta) {
 		// TODO Auto-generated method stub
+		inputUpdate(delta);
 		playeranimation.update(delta);
+		playeranimation2.update(delta);
       
-      inputUpdate(delta);
+      
       
 	}
 	public SpriteBatch batch() {
-		
-		batch.begin();
-		batch.draw(playeranimation.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));
-		batch.end();
-		
 		update(Gdx.graphics.getDeltaTime());
+		batch.begin();
+		if(i==0) {batch.draw(playeranimation.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));}
+		else if(i==1) {batch.draw(playeranimation2.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));
+		}
+		batch.end();
 		
 		return batch;
 		
