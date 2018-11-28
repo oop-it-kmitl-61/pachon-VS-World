@@ -27,12 +27,13 @@ public class Player {
 		batch = new SpriteBatch();
 		world = new World(new Vector2(0, -9.8f), false);
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\walk.png");
-		playeranimation = new Animation(new TextureRegion(tex),3,0.5f);
+		playeranimation = new Animation(new TextureRegion(tex),3,1f);
 	}
 	public void inputUpdate(float delta) {
         int horizontalForce = 0;
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        	
             horizontalForce -= 1;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -57,8 +58,9 @@ public class Player {
 	public SpriteBatch batch() {
 		
 		batch.begin();
-		batch.draw(playeranimation.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/2), player.getPosition().y*PPM - (tex.getHeight()/2));
+		batch.draw(playeranimation.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));
 		batch.end();
+		
 		update(Gdx.graphics.getDeltaTime());
 		
 		return batch;
@@ -67,6 +69,8 @@ public class Player {
 	public Body position() {
 		return player;
 	}
-    
+	public void dispose() {
+    	batch.dispose();
+    }
 	
 }

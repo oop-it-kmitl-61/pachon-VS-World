@@ -103,7 +103,7 @@ public class PlayState extends GameState{
 		// TODO Auto-generated method stub
       world.dispose();
       b2dr.dispose();
-      batch.dispose();
+      pachon.dispose();
       tmr.dispose();
       map.dispose();
      
