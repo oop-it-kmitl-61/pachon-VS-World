@@ -39,6 +39,7 @@ public class Pachon extends Game {
 		music.setLooping(true);
 		music.setVolume(0.1f);
 		music.play();
+		
         camera = new OrthographicCamera();       
         camera.setToOrtho(false, w / SCALE, h / SCALE);
         batch = new SpriteBatch();

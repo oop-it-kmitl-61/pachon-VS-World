@@ -7,9 +7,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.managers.GameStateManager;
+import com.mygdx.game.managers.Player;
 import com.mygdx.game.TiledObjectUtil;
 import static com.mygdx.game.Constants.PPM;
 
@@ -26,7 +29,8 @@ public class PlayState extends GameState{
 	private final float SCALE = 2.0f;
     private OrthogonalTiledMapRenderer tmr;
     protected TiledMap map;
-   
+    
+    private Player pachon;
 
     private Box2DDebugRenderer b2dr;
     private World world;
@@ -41,20 +45,17 @@ public class PlayState extends GameState{
 		super(gsm);
       world = new World(new Vector2(0, -9.8f), false);
       b2dr = new Box2DDebugRenderer();
-      
       player = createBox(242, 58,32, 50, false);
-      camera.position.x = player.getPosition().x *PPM;
-      batch = new SpriteBatch();
-      batch1 = new SpriteBatch();
-      font = new BitmapFont();
-      tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\playerGreen_walk1.png");
-      tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
-      pic = new Sprite(tex2);
       
-      pic2 = new Sprite(tex2);
+      camera.position.x = (float) (7.5625 *PPM);
+     
+      batch1 = new SpriteBatch();
+      
+      pachon = new Player(player);
+      font = new BitmapFont();
+      tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
       map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
       tmr = new OrthogonalTiledMapRenderer(map);
-      
       TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
 	}
 
@@ -63,33 +64,31 @@ public class PlayState extends GameState{
 		// TODO Auto-generated method stub
       world.step(1 / 60f, 6, 2);
       
-      inputUpdate(delta);
+     
       cameraUpdate();
       tmr.setView(camera);
       batch1.setProjectionMatrix(camera.combined);
-      batch.setProjectionMatrix(camera.combined);
+      pachon.batch().setProjectionMatrix(camera.combined);
+      
 	}
 
 	@Override
 	public void render() {
+	
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		batch1.begin();
-        batch1.draw(pic, 0, 0);
+        batch1.draw(tex2, 0, 0);
         batch1.end();
         batch1.begin();
-        batch1.draw(pic, 0, 1080);
+        batch1.draw(tex2, 0, 1080);
         batch1.end();
     	tmr.render();
         update(Gdx.graphics.getDeltaTime());
-
-        // Render
+        pachon.batch();
         
-       
-        batch.begin();
-        batch.draw(tex, player.getPosition().x*PPM - (tex.getWidth()/2), player.getPosition().y*PPM - (tex.getHeight()/2));
-        batch.end();
         
         
         
@@ -100,6 +99,7 @@ public class PlayState extends GameState{
 
 	@Override
 	public void dispose() {
+		
 		// TODO Auto-generated method stub
       world.dispose();
       b2dr.dispose();
@@ -116,29 +116,13 @@ public class PlayState extends GameState{
 //    	camera.position.y = 150;
 //    }
     
-    public void inputUpdate(float delta) {
-        int horizontalForce = 0;
-
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            horizontalForce -= 1;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            horizontalForce += 1;
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            player.applyForceToCenter(0, 300, false);
-        }
-
-        player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
-    }
     public void cameraUpdate() {
         Vector3 position = camera.position;
 
         float a,b,c;
         a = camera.position.x;
-        b = player.getPosition().x;
-        c = player.getPosition().y;
+        b = pachon.position().getPosition().x;
+        c = pachon.position().getPosition().y;
         if(b<(float) 7.5625) {b = (float) 7.5625;}
         else if(b>42.404976) {b = (float) 42.404976;}
         
