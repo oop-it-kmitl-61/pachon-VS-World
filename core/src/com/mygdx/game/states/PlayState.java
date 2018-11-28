@@ -56,6 +56,7 @@ public class PlayState extends GameState{
       tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
       map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
       tmr = new OrthogonalTiledMapRenderer(map);
+      
       TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
 	}
 
@@ -63,12 +64,10 @@ public class PlayState extends GameState{
 	public void update(float delta) {
 		// TODO Auto-generated method stub
       world.step(1 / 60f, 6, 2);
-      
-     
       cameraUpdate();
       tmr.setView(camera);
       batch1.setProjectionMatrix(camera.combined);
-      pachon.batch().setProjectionMatrix(camera.combined);
+      pachon.batch1().setProjectionMatrix(camera.combined);
       
 	}
 
@@ -86,11 +85,9 @@ public class PlayState extends GameState{
         batch1.draw(tex2, 0, 1080);
         batch1.end();
     	tmr.render();
+    	pachon.batch();
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
-        
-        
-        
         
         if(DEBUG) {
         b2dr.render(world, camera.combined.scl(PPM));
