@@ -18,13 +18,18 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.objects.TextureMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;;
 
 public class TiledObjectUtil {
+	private static TiledMap map;
 	private static float ppt = 32;
 	public static void parseTileObject(World world, MapObjects objects) {
+		map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
 		for(MapObject object : objects) {
 
             if (object instanceof TextureMapObject) {
@@ -41,6 +46,7 @@ public class TiledObjectUtil {
             }
             else if (object instanceof PolylineMapObject) {
                 shape = getPolyline((PolylineMapObject)object);
+                
             }
             else if (object instanceof CircleMapObject) {
                 shape = getCircle((CircleMapObject)object);
@@ -48,17 +54,17 @@ public class TiledObjectUtil {
             else {
                 continue;
             }
-            
+//            System.out.println(map.getLayers().get("death").getObjects().get(index));
             BodyDef bd = new BodyDef();
             bd.type = BodyType.StaticBody;
             Body body = world.createBody(bd);
             body.createFixture(shape, 0.0f);
-
             shape.dispose();
         }
     }
 
     private static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
+
         Rectangle rectangle = rectangleObject.getRectangle();
         PolygonShape polygon = new PolygonShape();
         Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) / ppt,

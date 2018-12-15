@@ -52,7 +52,6 @@ public class Pachon extends Game {
     	gsm.render();
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
-
     @Override
     public void resize(int width, int height) {
 

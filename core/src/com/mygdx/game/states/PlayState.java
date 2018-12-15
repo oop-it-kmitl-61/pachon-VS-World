@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,10 +13,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -30,12 +34,14 @@ public class PlayState extends GameState{
     private OrthogonalTiledMapRenderer tmr;
     protected TiledMap map;
     
-    private Player pachon;
+    private Player pachon,p1,p2;
 
     private Box2DDebugRenderer b2dr;
     private World world;
-    private Body player;
-    
+    private Body player,mon,mon1;
+    // Monter
+   
+    //
     protected SpriteBatch batch,batch1;
     private Sprite pic,pic2;
     private Texture tex,tex2;
@@ -46,9 +52,12 @@ public class PlayState extends GameState{
       world = new World(new Vector2(0, -9.8f), false);
       b2dr = new Box2DDebugRenderer();
       player = createBox(242, 58,32, 50, false);
+      mon = createBox(300, 58,32, 50, true);
       
+      p1 = new Player(mon);
+
       camera.position.x = (float) (7.5625 *PPM);
-     
+
       batch1 = new SpriteBatch();
       
       pachon = new Player(player);
@@ -56,10 +65,9 @@ public class PlayState extends GameState{
       tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
       map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
       tmr = new OrthogonalTiledMapRenderer(map);
-      
       TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
 	}
-
+	
 	@Override
 	public void update(float delta) {
 		// TODO Auto-generated method stub
@@ -68,6 +76,8 @@ public class PlayState extends GameState{
       tmr.setView(camera);
       batch1.setProjectionMatrix(camera.combined);
       pachon.batch1().setProjectionMatrix(camera.combined);
+      p1.batch1().setProjectionMatrix(camera.combined);
+      
       
 	}
 
@@ -85,9 +95,45 @@ public class PlayState extends GameState{
         batch1.draw(tex2, 0, 1080);
         batch1.end();
     	tmr.render();
+    	p1.batch();
     	pachon.batch();
+   
+    	if(pachon.position().isBullet()) {
+    		System.out.println("asd");
+    	}
+    	world.setContactListener(new ContactListener() {
+			@Override
+			public void beginContact(Contact contact) {
+				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "Player" ) {
+					System.out.println("Death");
+					System.exit(0);
+				}
+				
+			}
+
+			@Override
+			public void endContact(Contact contact) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+				// TODO Auto-generated method stub
+				
+			}
+        });
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
+        
+        
+ 
         
         if(DEBUG) {
         b2dr.render(world, camera.combined.scl(PPM));
@@ -126,7 +172,7 @@ public class PlayState extends GameState{
         if((a >= 242 == true)&&(a<= 1357.99)) {position.x = camera.position.x + (b * PPM - camera.position.x) * .1f;}
         if(c<4.7732534) {c = (float) 4.7732534;}
         else if( c>44.299213) {c = (float) 44.299213;}
-        position.y = camera.position.y + (c * PPM - camera.position.y) * .1f;;
+        position.y = camera.position.y + (c * PPM - camera.position.y) * .1f;
        
         camera.position.set(position);
 
@@ -148,8 +194,10 @@ public class PlayState extends GameState{
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
-
         pBody.createFixture(shape, 0.0f);
+        pBody.setUserData("Player");
+        
+        
         shape.dispose();
         return pBody;
     }
