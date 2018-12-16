@@ -87,7 +87,7 @@ public class PlayState extends GameState{
 	}
 
 	@Override
-	public void render() {
+	public void render(SpriteBatch batch) {
 		
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
@@ -112,17 +112,16 @@ public class PlayState extends GameState{
 					hp -=1;
 					System.out.println("hp = "+hp);
 					
-					
 				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "wall" ) {
 					System.out.println("Now Death water");
 					hp=0;
-		
-					
+					gsm.setState(new PlayState(gsm));
 				}
 				
 			if(hp == 0) {
 				System.out.println("deah because 0 Play new Game");
+				gsm.setState(new PlayState(gsm));
 			}	
 			}
 

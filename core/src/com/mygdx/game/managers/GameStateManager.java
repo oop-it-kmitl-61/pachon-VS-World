@@ -2,6 +2,7 @@ package com.mygdx.game.managers;
 
 import java.util.Stack;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Pachon;
 //import com.mygdx.game.states.GameState;
 import com.mygdx.game.states.*;
@@ -11,25 +12,33 @@ public class GameStateManager {
 	private final Pachon app;
 	private Stack<GameState> states;
 	
-	public enum State{
-		SPLASH,
-		PLAY
-	}
 	public GameStateManager(final Pachon app) {
 		this.app = app;
 		this.states = new Stack<GameState>();
-		this.setState(State.SPLASH);
 	}
 	public Pachon pachon() {
 		return app;
 	}
 	
+//	public void resize(int w, int h) {
+//		states.peek().resize(w,h);
+//	}
+	public void push(GameState state) {
+		states.push(state);
+	}
+	public void pop() {
+		states.pop();
+	}
+	public void setState(GameState state) {
+		states.pop();
+		states.push(state);
+	}
 	public void update(float dalta) {
 		states.peek().update(dalta);
 	}
 	
-	public void render() {
-		states.peek().render();
+	public void render(SpriteBatch batch) {
+		states.peek().render(batch);
 	}
 	public void dispose() {
 		for(GameState gs: states) {
@@ -37,21 +46,4 @@ public class GameStateManager {
 		}
 		states.clear();
 	}
-	public void resize(int w, int h) {
-		states.peek().resize(w,h);
-	}
-	public void setState(State state) {
-		if(states.size() >= 1) {
-			states.pop().dispose();
-		}
-		states.push(getState(state));
-	}
-	private GameState getState(State state) {
-		switch (state){
-		case SPLASH: return new SplashState(this);
-		case PLAY: return new PlayState(this);
-		}
-		return null;
-	}
-	
 }

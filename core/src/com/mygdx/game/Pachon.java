@@ -18,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.managers.GameStateManager;
+import com.mygdx.game.states.SplashState;
 
 import static com.mygdx.game.Constants.PPM;
 
@@ -28,7 +29,7 @@ public class Pachon extends Game {
 	protected OrthographicCamera camera;
 	
     private GameStateManager gsm;
-    protected SpriteBatch batch;
+    public SpriteBatch batch;
   
     private Music music;
     @Override
@@ -44,22 +45,22 @@ public class Pachon extends Game {
         camera.setToOrtho(false, w / SCALE, h / SCALE);
         batch = new SpriteBatch();
         gsm = new GameStateManager(this);
+        gsm.push(new SplashState(gsm));
     }
 
     @Override
     public void render() {
     	gsm.update(Gdx.graphics.getDeltaTime());
-    	gsm.render();
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+    	gsm.render(batch);
     }
-    @Override
-    public void resize(int width, int height) {
-
-    	gsm.resize((int) (width/ SCALE), (int)(height/SCALE));
+//    @Override
+//    public void resize(int width, int height) {
+//
+//    	gsm.resize((int) (width/ SCALE), (int)(height/SCALE));
 //    	camera.setToOrtho(false, width / SCALE, height / SCALE);
 //    	camera.position.x = 242;
 //    	camera.position.y = 150;
-    }
+//    }
 
     @Override
     public void dispose() {

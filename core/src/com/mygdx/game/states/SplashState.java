@@ -1,11 +1,14 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.Pachon;
 import com.mygdx.game.managers.GameStateManager;
 
@@ -15,7 +18,7 @@ public class SplashState extends GameState{
 	protected SpriteBatch batch;
     private Sprite pic, pic2;
     private Texture tex, playBtn;
-    public BitmapFont font;
+    public BitmapFont font48;
 	public SplashState(GameStateManager gsm) {
 		super(gsm);
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
@@ -23,7 +26,8 @@ public class SplashState extends GameState{
 		pic = new Sprite(tex);
 		pic2 = new Sprite(playBtn);
 		batch = new SpriteBatch();
-		font = new BitmapFont();
+		initFonts();
+		
 	}
 
 	@Override
@@ -33,19 +37,21 @@ public class SplashState extends GameState{
 	}
 
 	@Override
-	public void render() {
+	public void render(SpriteBatch batch) {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(pic, 0, 0, 840, 600);
-		font.draw(batch, "pachon VS World", (840/2) - (playBtn.getWidth() / 2), 600/2 + 50);
+		font48.draw(batch, "pachon VS World", (840/2) - playBtn.getWidth() - 75, 600/2 + 100);
 		batch.draw(pic2, (840/2) - (playBtn.getWidth() / 2), 600/3);
 		batch.end();
 		if(Gdx.input.justTouched()) {
-			
-			gsm.setState(GameStateManager.State.PLAY);
+			gsm.setState(new PlayState(gsm));
 			dispose();
+		}
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			Gdx.app.exit();
 		}
 	}
 
@@ -55,8 +61,14 @@ public class SplashState extends GameState{
 		tex.dispose();
 		playBtn.dispose();
 	}
-
 	
+	public void initFonts() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("..\\core\\assets\\img\\fonts\\Arcon.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		
+		params.size = 48;
+		params.color = Color.BLACK;
+		font48 = generator.generateFont(params);
+	}
 	
-
 }
