@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Player {
+public class monsterB {
 	private Body player;
 	private Texture tex,tex2,tex3;
 	private SpriteBatch batch;
@@ -22,7 +22,7 @@ public class Player {
 	private Vector3 potition;
 	private Animation playeranimation,playeranimation2,playeranimation3;
 	private int i =0;
-	public Player(Body player) {
+	public monsterB(Body player) {
 		this.player = player;
 		batch = new SpriteBatch();
 		world = new World(new Vector2(0, -9.8f), false);

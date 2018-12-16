@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Player {
+public class mosterA {
 	private Body player;
 	private Texture tex,tex2,tex3;
 	private SpriteBatch batch;
@@ -22,7 +22,9 @@ public class Player {
 	private Vector3 potition;
 	private Animation playeranimation,playeranimation2,playeranimation3;
 	private int i =0;
-	public Player(Body player) {
+	
+	private int ck = 0;
+	public mosterA(Body player) {
 		this.player = player;
 		batch = new SpriteBatch();
 		world = new World(new Vector2(0, -9.8f), false);
@@ -37,25 +39,19 @@ public class Player {
 	public void inputUpdate(float delta) {
         int horizontalForce = 0;
         
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-        	
-            horizontalForce -= 1;
+        System.out.println(player.getPosition());
+        if(player.getPosition().x < 24.2815) {
+        	ck = 1;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            horizontalForce += 1;
-           
+        else if(player.getPosition().x > 31.555706) {
+        	ck =-1;
         }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-        	
-            player.applyForceToCenter(0, 300, false);
-        }
-        
+        player.setLinearVelocity((horizontalForce+=ck) * 5, player.getLinearVelocity().y);
         if(player.getLinearVelocity().y != 0) {i = 2;}
         else if(player.getLinearVelocity().y == 0 && player.getLinearVelocity().x != 0 ) {i = 1;}
         else {i=0;}
         
-        player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
+        
     }
 	public void update(float delta) {
 		// TODO Auto-generated method stub

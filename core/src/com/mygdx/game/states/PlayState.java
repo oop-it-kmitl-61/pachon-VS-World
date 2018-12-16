@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.managers.GameStateManager;
 import com.mygdx.game.managers.Player;
+import com.mygdx.game.managers.mosterA;
 import com.mygdx.game.TiledObjectUtil;
 import static com.mygdx.game.Constants.PPM;
 
@@ -34,8 +35,8 @@ public class PlayState extends GameState{
     private OrthogonalTiledMapRenderer tmr;
     protected TiledMap map;
     
-    private Player pachon,p1,p2;
-
+    private Player pachon,p2;
+    private mosterA p1;
     private Box2DDebugRenderer b2dr;
     private World world;
     private Body player,mon,mon1;
@@ -52,9 +53,9 @@ public class PlayState extends GameState{
       world = new World(new Vector2(0, -9.8f), false);
       b2dr = new Box2DDebugRenderer();
       player = createBox(242, 58,32, 50, false);
-      mon = createBox(300, 58,32, 50, true);
+      mon = createBox(777, 185,32, 50, false);
       
-      p1 = new Player(mon);
+      p1 = new mosterA(mon);
 
       camera.position.x = (float) (7.5625 *PPM);
 
@@ -97,16 +98,14 @@ public class PlayState extends GameState{
     	tmr.render();
     	p1.batch();
     	pachon.batch();
-   
-    	if(pachon.position().isBullet()) {
-    		System.out.println("asd");
-    	}
+//    	System.out.println(pachon.position().getPosition().x*PPM);
+    	
     	world.setContactListener(new ContactListener() {
 			@Override
 			public void beginContact(Contact contact) {
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "Player" ) {
 					System.out.println("Death");
-					System.exit(0);
+					//pachon.position().setLinearVelocity(300, 0);
 				}
 				
 			}
@@ -196,6 +195,28 @@ public class PlayState extends GameState{
         shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
         pBody.createFixture(shape, 0.0f);
         pBody.setUserData("Player");
+        
+        
+        shape.dispose();
+        return pBody;
+    }
+    public Body createBoxm(int x, int y, int width, int height, boolean isStatic) {
+        Body pBody;
+        BodyDef def = new BodyDef();
+
+        if(isStatic)
+            def.type = BodyDef.BodyType.StaticBody;
+        else
+            def.type = BodyDef.BodyType.DynamicBody;
+
+        def.position.set(x / PPM, y / PPM);
+        def.fixedRotation = true;
+        pBody = world.createBody(def);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
+        pBody.createFixture(shape, 0.0f);
+        pBody.setUserData("monster");
         
         
         shape.dispose();
