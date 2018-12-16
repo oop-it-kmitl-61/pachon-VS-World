@@ -36,14 +36,14 @@ public class mosterA {
 		playeranimation3 = new Animation(new TextureRegion(tex3),3,0.3f);
 		
 	}
-	public void inputUpdate(float delta) {
+	public void inputUpdate(float delta,float x,float x1) {
         int horizontalForce = 0;
         
-        System.out.println(player.getPosition());
-        if(player.getPosition().x < 24.2815) {
+        
+        if(player.getPosition().x < x) {
         	ck = 1;
         }
-        else if(player.getPosition().x > 31.555706) {
+        else if(player.getPosition().x > x1) {
         	ck =-1;
         }
         player.setLinearVelocity((horizontalForce+=ck) * 5, player.getLinearVelocity().y);
@@ -53,9 +53,9 @@ public class mosterA {
         
         
     }
-	public void update(float delta) {
+	public void update(float delta,float x,float x1) {
 		// TODO Auto-generated method stub
-		inputUpdate(delta);
+		inputUpdate(delta,x,x1);
 		playeranimation.update(delta);
 		playeranimation2.update(delta);
       
@@ -63,8 +63,8 @@ public class mosterA {
       
 	}
 	
-	public void batch() {
-		update(Gdx.graphics.getDeltaTime());
+	public void batch(float x,float x1) {
+		update(Gdx.graphics.getDeltaTime(),x,x1);
 		batch.begin();
 		
 		

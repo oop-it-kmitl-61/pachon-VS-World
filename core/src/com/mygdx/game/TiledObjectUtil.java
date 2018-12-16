@@ -31,7 +31,7 @@ public class TiledObjectUtil {
 	public static void parseTileObject(World world, MapObjects objects) {
 		map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
 		for(MapObject object : objects) {
-
+			
             if (object instanceof TextureMapObject) {
                 continue;
             }
