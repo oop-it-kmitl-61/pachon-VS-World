@@ -44,7 +44,7 @@ public class mosterA {
         
         if(a==true) {
         	
-        
+         
         if(player.getPosition().x < x) {
         	ck = 1;
         }

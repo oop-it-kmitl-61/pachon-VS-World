@@ -1,7 +1,7 @@
 package com.mygdx.game.managers;
 
 import static com.mygdx.game.Constants.PPM;
-
+import static com.mygdx.game.Constants.Score;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -42,12 +42,12 @@ public class crytal {
 		batch.begin();
 		cry.update(Gdx.graphics.getDeltaTime());
 		batch.draw(cry.getFrame(), x, y);
-	
+	 
 		batch.end();
 		return 0;
 		}
 		else {
-			return i=1; 
+			return Score += 50; 
 		}
 		
 	}

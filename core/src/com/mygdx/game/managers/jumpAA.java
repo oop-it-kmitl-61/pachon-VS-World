@@ -34,7 +34,7 @@ public class jumpAA {
 		
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\jump.png");
 		
-	
+		playeranimation = new Animation(new TextureRegion(tex),1,1f);
 		playeranimation2 = new Animation(new TextureRegion(tex),2,1f);
 
 		
@@ -50,12 +50,15 @@ public class jumpAA {
       
 	}
 	
-	public void batch() {
+	public void batch(boolean jump) {
 		update(Gdx.graphics.getDeltaTime());
 		batch.begin();
-		
+		if(true) {
 		batch.draw(playeranimation2.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));
-	
+		}
+		else if(false) {
+			batch.draw(playeranimation2.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));
+		}
 		batch.end();	
 	}
 	public SpriteBatch batch1() {

@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Pachon;
-import com.mygdx.game.states.PlayState;
 import com.mygdx.game.managers.GameStateManager;
+import static com.mygdx.game.Constants.Score;
 
 /**
  * Created by brentaureli on 10/8/15.
@@ -19,7 +19,7 @@ public class GameOverState extends GameState {
 	float acc = 0f;
 	protected SpriteBatch batch;
     private BitmapFont font;
-    private static Integer score = 0;
+    private Integer score = 0;
 	public GameOverState(GameStateManager gsm) {
 		super(gsm);
 		batch = new SpriteBatch();
@@ -40,7 +40,11 @@ public class GameOverState extends GameState {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
+<<<<<<< HEAD
 		font.draw(batch, String.format("Score: %d", score*300), Gdx.graphics.getWidth()/2 - 30, Gdx.graphics.getHeight() - 200);
+=======
+		font.draw(batch, String.format("Score: %d", Score), Gdx.graphics.getWidth()/2 - 30, Gdx.graphics.getHeight() - 200);
+>>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
 		font.draw(batch, "Click to main menu", Gdx.graphics.getWidth()/2 - 100, Gdx.graphics.getHeight()/2 - 25);
 		font.draw(batch, "Press Esc to exit", Gdx.graphics.getWidth()/2 - 85, Gdx.graphics.getHeight()/3);
 		batch.end();
@@ -53,8 +57,8 @@ public class GameOverState extends GameState {
 		}
 	}
 	
-	public static void getScore(int value) {
-		score = value;
+	public void getScore(int value) {
+		this.score = value;
 	}
 
 	@Override

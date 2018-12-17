@@ -24,6 +24,7 @@ public abstract class GameState {
 		camera.setToOrtho(false, w, h);
 	}
 	
+	
 	public abstract void update(float delta);
 	public abstract void render(SpriteBatch batch);
 	public abstract void dispose();

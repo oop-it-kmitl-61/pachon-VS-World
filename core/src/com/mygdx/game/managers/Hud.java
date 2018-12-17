@@ -19,8 +19,12 @@ public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
 	
+<<<<<<< HEAD
+=======
+    //Pachon score/time Tracking Variables
+>>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
     private static Integer worldTimer;
-    private static boolean timeUp; // true when the world timer reaches 0
+    public static boolean timeUp; // true when the world timer reaches 0
     private static float timeCount;
     private static Integer score;
     
@@ -36,7 +40,13 @@ public class Hud implements Disposable{
         timeCount = 0;
         score = 0;
        
+<<<<<<< HEAD
 
+=======
+        sb = new SpriteBatch();
+        //setup the HUD viewport using a new camera seperate from our gamecam
+        //define our stage using that viewport and our games spritebatch
+>>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
         viewport = new FitViewport(840, 600, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
@@ -47,9 +57,15 @@ public class Hud implements Disposable{
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel =new Label(String.format("%03d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+<<<<<<< HEAD
         tulabel = new Label("Up Right Left  key to play", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("Pach0n VS World", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         marioLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+=======
+        levelLabel = new Label("Pachon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        marioLabel = new Label("Pachon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+>>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
 
         table.add(marioLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
@@ -63,10 +79,14 @@ public class Hud implements Disposable{
 
     }
     
-    public static void update(float dt){
+    public void update(float dt){
         timeCount += dt;
-        if(timeCount >= 1){
-            worldTimer--;
+        if(timeCount >= 1) {
+        	if(worldTimer > 0) {
+        		worldTimer--;
+        	} else {
+        		timeUp = true;
+        	}
             countdownLabel.setText(String.format("%03d", worldTimer));
             timeCount = 0;
             timeUp = (worldTimer == 0) ? true: false;
@@ -74,9 +94,15 @@ public class Hud implements Disposable{
         }
     }
 
+<<<<<<< HEAD
     public static void addScore(int value){
         score = value;
         scoreLabel.setText(String.format("%03d", score));
+=======
+    public void addScore(int value){
+        score = value;
+        scoreLabel.setText(String.format("%06d", score));
+>>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
     }
 
     @Override

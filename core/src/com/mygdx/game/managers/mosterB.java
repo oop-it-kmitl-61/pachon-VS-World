@@ -69,7 +69,7 @@ public class mosterB {
 	
       
 	}
-	
+	 
 	public void batch(float x,float x1,float x2,float x3) {
 		
 		update(Gdx.graphics.getDeltaTime(),x,x1,x2,x3);
