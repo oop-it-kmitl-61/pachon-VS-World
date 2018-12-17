@@ -1,5 +1,5 @@
 package com.mygdx.game.states;
-
+import com.mygdx.game.managers.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -59,7 +59,6 @@ public class PlayState extends GameState{
     
     private int score = 0;
     // Score
-    private Hud hud;
     //
     protected SpriteBatch batch,batch1 ,hud_batch;
     private Sprite pic,pic2;
@@ -116,14 +115,9 @@ public class PlayState extends GameState{
       camera.position.x = (float) (7.5625 *PPM);
 
       batch1 = new SpriteBatch();
-<<<<<<< HEAD
       hud_batch = new SpriteBatch();
       hud = new Hud(hud_batch);
       hud.setWorldTimer(120);
-=======
-      hud = new Hud(batch1);
-      
->>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
       ac = new ArrayList();
       c1 = new crytal(450, 90);
       ac.add(c1);
@@ -215,20 +209,13 @@ public class PlayState extends GameState{
     	b5.batch((float)26, (float)31, (float)9.10604, (float)19.35604);
     	b6.batch((float)43.94704, (float)47.121815, (float)32.31839, (float)35.48501);
     	pachon.batch();
-<<<<<<< HEAD
+    	
     	hud_batch.setProjectionMatrix(hud.stage.getCamera().combined);
     	hud.stage.draw();
         if(hud.isTimeUp() == true) {
         	gsm.setState(new GameOverState(gsm));
         }
-=======
-    	
-    	batch.begin();
-    	hud.update(Gdx.graphics.getDeltaTime());
-    	hud.stage.draw();
-    	batch.end();
 //    	System.out.println(pachon.position().getPosition());
->>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
     	world.setContactListener(new ContactListener() {
 			@Override
 			public void beginContact(Contact contact) {
@@ -285,12 +272,7 @@ public class PlayState extends GameState{
     	
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
-<<<<<<< HEAD
 //        System.out.println(pachon.getpo()+" "+pachon.position().getPosition());
-=======
-        
-        
->>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
  
         
         if(DEBUG) {
@@ -300,12 +282,8 @@ public class PlayState extends GameState{
         	if(ac.get(i).getpo().isCollinear(pachon.getpo())) {
         		
         		
-<<<<<<< HEAD
         		score += ac.get(i).batch(false);
         		hud.addScore(score);
-=======
-        		ac.get(i).batch(false);
->>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
         		ac.remove(i);
         	}
         	else{
@@ -313,14 +291,7 @@ public class PlayState extends GameState{
         	}
         	
         }
-<<<<<<< HEAD
 //        System.out.println("Your Score ="+score);
-        GameOverState.getScore(score);
-=======
-      
-        hud.addScore(Score);
-        
->>>>>>> f28f738c926f66aef7f5aefd802681b5546cdf99
 	}
 
 	@Override
