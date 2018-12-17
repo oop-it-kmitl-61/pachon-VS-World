@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class mosterA {
+public class mosterB {
 	private Body player;
 	private Texture tex,tex2,tex3;
 	private SpriteBatch batch;
@@ -23,39 +23,46 @@ public class mosterA {
 	private Animation playeranimation,playeranimation2,playeranimation3;
 	private int i =0;
 	
+	private int cb = 0;
 	private int ck = 0;
-	public mosterA(Body player) {
+	public mosterB(Body player) {
 		this.player = player;
 		batch = new SpriteBatch();
 		world = new World(new Vector2(0, -9.8f), false);
 		
-		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\mon1.png");
+		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\fly.png");
 		
 	
-		playeranimation2 = new Animation(new TextureRegion(tex),2,0.1f);
+		playeranimation2 = new Animation(new TextureRegion(tex),2,0.4f);
 
 		
 	}
-	public void inputUpdate(float delta,float x,float x1) {
+	public void inputUpdate(float delta,float x,float x1,float x2,float x3) {
         int horizontalForce = 0;
         
         
-        if(player.getPosition().x < x) {
+        if(player.getPosition().y < x) {
         	ck = 1;
         }
-        else if(player.getPosition().x > x1) {
+        else if(player.getPosition().y > x1) {
         	ck =-1;
         }
-        player.setLinearVelocity((horizontalForce+=ck) * 5, player.getLinearVelocity().y);
+        if(player.getPosition().x<x2) {
+        	cb = 1;
+        }
+        else if(player.getPosition().x>x3) {
+        	cb = -1;
+        }
+        player.setLinearVelocity((horizontalForce+=cb)  ,(horizontalForce+=ck));
         if(player.getLinearVelocity().y != 0) {i = 2;}
         else if(player.getLinearVelocity().y == 0 && player.getLinearVelocity().x != 0 ) {i = 1;}
         else {i=0;}
         
         
     }
-	public void update(float delta,float x,float x1) {
+	public void update(float delta,float x,float x1,float x2,float x3) {
 		// TODO Auto-generated method stub
-		inputUpdate(delta,x,x1);
+		inputUpdate(delta,x,x1,x2,x3);
 		
 		playeranimation2.update(delta);
       
@@ -63,8 +70,9 @@ public class mosterA {
       
 	}
 	
-	public void batch(float x,float x1) {
-		update(Gdx.graphics.getDeltaTime(),x,x1);
+	public void batch(float x,float x1,float x2,float x3) {
+		
+		update(Gdx.graphics.getDeltaTime(),x,x1,x2,x3);
 		batch.begin();
 		
 		batch.draw(playeranimation2.getFrame(), player.getPosition().x*PPM - (tex.getWidth()/5), player.getPosition().y*PPM - (tex.getHeight()/2));

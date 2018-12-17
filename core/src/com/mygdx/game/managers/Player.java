@@ -22,6 +22,9 @@ public class Player {
 	private Vector3 potition;
 	private Animation playeranimation,playeranimation2,playeranimation3;
 	private int i =0;
+	
+	
+	private Vector2 a;
 	public Player(Body player) {
 		this.player = player;
 		batch = new SpriteBatch();
@@ -32,6 +35,7 @@ public class Player {
 		playeranimation = new Animation(new TextureRegion(tex2),1,0.3f);
 		playeranimation2 = new Animation(new TextureRegion(tex),3,0.3f);
 		playeranimation3 = new Animation(new TextureRegion(tex3),3,0.3f);
+		a = new Vector2();
 		
 	}
 	public void inputUpdate(float delta) {
@@ -66,7 +70,13 @@ public class Player {
 		playeranimation3.update(delta);
       
 	}
-	
+	public Vector2 getpo() {
+		
+		this.a.x = (int)player.getPosition().x*32;
+		this.a.y = (int)player.getPosition().y*32;
+		return a;
+		
+	}
 	public void batch() {
 		update(Gdx.graphics.getDeltaTime());
 		batch.begin();

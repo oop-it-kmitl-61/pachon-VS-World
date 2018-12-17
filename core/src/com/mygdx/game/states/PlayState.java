@@ -24,10 +24,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.managers.GameStateManager;
+
 import com.mygdx.game.managers.Player;
+import com.mygdx.game.managers.crytal;
 import com.mygdx.game.managers.mosterA;
+import com.mygdx.game.managers.mosterB;
 import com.mygdx.game.TiledObjectUtil;
 import static com.mygdx.game.Constants.PPM;
+
+import java.util.ArrayList;
 
 public class PlayState extends GameState{
 	private boolean DEBUG = false;
@@ -35,13 +40,19 @@ public class PlayState extends GameState{
     private OrthogonalTiledMapRenderer tmr;
     protected TiledMap map;
     
+    
     private Player pachon;
     private mosterA p1,p2,wall1;
+    private ArrayList<mosterA> ma;
+    private mosterB b1,b2,b3,b4,b5,b6,b7,b8;
+    private ArrayList<mosterB> mb;
     private Box2DDebugRenderer b2dr;
     private World world;
-    private Body player,mon,mon1,wall;
+    private Body player,mon,mon1,wall,fly,fly2,fly3,fly4;
     
     private int hp = 3;
+    
+    private int score = 0;
     // Monter
    
     //
@@ -49,27 +60,40 @@ public class PlayState extends GameState{
     private Sprite pic,pic2;
     private Texture tex,tex2;
     public BitmapFont font;
+    private crytal c1;
+    private ArrayList<crytal> ac;
 //    playstate like create class
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
       world = new World(new Vector2(0, -9.8f), false);
       b2dr = new Box2DDebugRenderer();
       player = createBox(242, 58,32, 50, false);
-      mon = createBoxm(777, 185,32, 50, false);
-      mon1 = createBoxm(750,409,32,50,false);
+      mon = createBoxm(777, 185,32, 42, false);
+      mon1 = createBoxm(750,409,32,42,false);
+      fly = createBoxm(1466,271,52,33,false);
+      fly2 = createBoxm(1408,576,52,33,false);
+      fly3 = createBoxm(96,832,52,33,false);
       wall = createwall(465,40,10000000,1,true);
       p1 = new mosterA(mon);
       p2 = new mosterA(mon1);
+      b2 = new mosterB(fly);
+      b1 = new mosterB(fly2);
+      b3 = new mosterB(fly3);
       wall1 = new mosterA(wall);
       camera.position.x = (float) (7.5625 *PPM);
 
       batch1 = new SpriteBatch();
-      
+      ac = new ArrayList();
+      c1 = new crytal(450, 90);
+      ac.add(c1);
+      c1 = new crytal(1312,192);
+      ac.add(c1);
       pachon = new Player(player);
       font = new BitmapFont();
       tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
       map = new TmxMapLoader().load("..\\core\\assets\\map1.tmx");
       tmr = new OrthogonalTiledMapRenderer(map);
+      
       TiledObjectUtil.parseTileObject(world, map.getLayers().get("obj").getObjects());
 	}
 	
@@ -83,7 +107,12 @@ public class PlayState extends GameState{
       pachon.batch1().setProjectionMatrix(camera.combined);
       p1.batch1().setProjectionMatrix(camera.combined);
       p2.batch1().setProjectionMatrix(camera.combined);
-      
+      b1.batch1().setProjectionMatrix(camera.combined);
+      b2.batch1().setProjectionMatrix(camera.combined);
+      b3.batch1().setProjectionMatrix(camera.combined);
+      for(int i = 0;i<ac.size();i++) {
+    	  ac.get(i).batch1().setProjectionMatrix(camera.combined);;
+      }
 	}
 
 	@Override
@@ -102,6 +131,9 @@ public class PlayState extends GameState{
     	tmr.render();
     	p1.batch((float)24.2815,(float)31.555706);
     	p2.batch((float)23.442413,(float)28.409721);
+    	b1.batch((float)14.796248, (float)25.078955,(float) 44.18165, (float)44.18165);
+    	b2.batch((float)7.910124, (float)9.689845,(float)43.037514, (float)45.13125);
+    	b3.batch((float)12.796248, (float)26.256123, (float)3.9673734, (float)3.98);
     	pachon.batch();
     	
     	
@@ -111,6 +143,7 @@ public class PlayState extends GameState{
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "monster" ) {
 					hp -=1;
 					System.out.println("hp = "+hp);
+					
 					
 				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "wall" ) {
@@ -122,7 +155,7 @@ public class PlayState extends GameState{
 			if(hp == 0) {
 				System.out.println("deah because 0 Play new Game");
 				gsm.setState(new PlayState(gsm));
-			}	
+				}	
 			}
 
 			@Override
@@ -146,12 +179,25 @@ public class PlayState extends GameState{
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
         
-        
+//        System.out.println(pachon.getpo()+" "+pachon.position().getPosition());
  
         
         if(DEBUG) {
         b2dr.render(world, camera.combined.scl(PPM));
         }
+        for(int i = 0;i<ac.size();i++) {
+        	if(ac.get(i).getpo().isCollinear(pachon.getpo())) {
+        		
+        		
+        		score += ac.get(i).batch(false);
+        		ac.remove(i);
+        	}
+        	else{
+        		score += ac.get(i).batch(true);
+        	}
+        	
+        }
+        System.out.println("Your Score ="+score);
 	}
 
 	@Override
@@ -255,7 +301,7 @@ public class PlayState extends GameState{
         pBody.createFixture(shape, 0.0f);
         pBody.setUserData("wall");
         
-        
+  
         shape.dispose();
         return pBody;
     }
