@@ -88,7 +88,7 @@ public class PlayState extends GameState{
       
       wall = createwall(465,40,10000000,1,true);
       
-      jump = createwall(1300,800,141,81,true);
+      jump = createjump(1248,590,50,29,true);
       
       p1 = new mosterA(mon);
       p2 = new mosterA(mon1);
@@ -187,6 +187,11 @@ public class PlayState extends GameState{
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "monster" ) {
 					hp -=1;
 					System.out.println("hp = "+hp);
+					
+					
+				}
+				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "j" ) {
+					pachon.setjump();
 					
 					
 				}
@@ -349,6 +354,29 @@ public class PlayState extends GameState{
         shape.dispose();
         return pBody;
     }
+    public Body createjump(int x, int y, int width, int height, boolean isStatic) {
+        Body pBody;
+        BodyDef def = new BodyDef();
+
+        if(isStatic)
+            def.type = BodyDef.BodyType.StaticBody;
+        else
+            def.type = BodyDef.BodyType.DynamicBody;
+
+        def.position.set(x / PPM, y / PPM);
+        def.fixedRotation = true;
+        pBody = world.createBody(def);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
+        pBody.createFixture(shape, 0.0f);
+        pBody.setUserData("j");
+        
+  
+        shape.dispose();
+        return pBody;
+    }
+    
   public SpriteBatch getBatch() {
 	return batch;
   }

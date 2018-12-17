@@ -22,7 +22,7 @@ public class Player {
 	private Vector3 potition;
 	private Animation playeranimation,playeranimation2,playeranimation3;
 	private int i =0;
-	
+	private int cj = 0;
 	
 	private Vector2 a;
 	public Player(Body player) {
@@ -49,18 +49,26 @@ public class Player {
             horizontalForce += 1;
            
         }
-
+        if(player.getLinearVelocity().y == 0) {
+        	cj=0;
+        } 
+        if(player.getLinearVelocity().y == 0 || cj == 0) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
         	
-            player.applyForceToCenter(0, 300, false);
+            player.applyForceToCenter(0, 600, false);
+            cj++;
         }
         
+        }
         if(player.getLinearVelocity().y != 0) {i = 2;}
         else if(player.getLinearVelocity().y == 0 && player.getLinearVelocity().x != 0 ) {i = 1;}
         else {i=0;}
         
         player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
     }
+	public void setjump() {
+		player.setLinearVelocity(player.getLinearVelocity().x, 20);
+	}
 	public void update(float delta) {
 		// TODO Auto-generated method stub
 		inputUpdate(delta);

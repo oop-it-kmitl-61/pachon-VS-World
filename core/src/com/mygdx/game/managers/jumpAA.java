@@ -35,7 +35,7 @@ public class jumpAA {
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\jump.png");
 		
 	
-		playeranimation2 = new Animation(new TextureRegion(tex),4,0.1f);
+		playeranimation2 = new Animation(new TextureRegion(tex),2,1f);
 
 		
 	}
