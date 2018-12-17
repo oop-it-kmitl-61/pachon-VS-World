@@ -198,12 +198,12 @@ public class PlayState extends GameState{
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "wall" ) {
 					System.out.println("Now Death water");
 					hp=0;
-//					gsm.setState(new PlayState(gsm));
+					gsm.setState(new GameOverState(gsm));
 				}
 				
 			if(hp == 0) {
 				System.out.println("deah because 0 Play new Game");
-//				gsm.setState(new PlayState(gsm));
+				gsm.setState(new GameOverState(gsm));
 				}	
 			}
 
@@ -246,7 +246,8 @@ public class PlayState extends GameState{
         	}
         	
         }
-//        System.out.println("Your Score ="+score);
+        System.out.println("Your Score ="+score);
+        GameOverState.getScore(score);
 	}
 
 	@Override

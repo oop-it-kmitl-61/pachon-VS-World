@@ -18,7 +18,7 @@ public class SplashState extends GameState{
 	protected SpriteBatch batch;
     private Sprite pic, pic2;
     private Texture tex, playBtn;
-    public BitmapFont font48;
+    public BitmapFont font48, font;
 	public SplashState(GameStateManager gsm) {
 		super(gsm);
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
@@ -26,6 +26,8 @@ public class SplashState extends GameState{
 		pic = new Sprite(tex);
 		pic2 = new Sprite(playBtn);
 		batch = new SpriteBatch();
+		font = new BitmapFont();
+		font.getData().setScale(2);
 		initFonts();
 		
 	}
@@ -42,9 +44,10 @@ public class SplashState extends GameState{
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(pic, 0, 0, 840, 600);
-		font48.draw(batch, "pachon VS World", (840/2) - playBtn.getWidth() - 75, 600/2 + 100);
-		batch.draw(pic2, (840/2) - (playBtn.getWidth() / 2), 600/3);
+		batch.draw(pic, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		font48.draw(batch, "pachon VS World", (Gdx.graphics.getWidth()/2) - playBtn.getWidth() - 75, Gdx.graphics.getHeight()/2 + 100);
+		font.draw(batch, "Press ESC to exit", (Gdx.graphics.getWidth()/2) - 115, Gdx.graphics.getHeight()/3 - 35);
+		batch.draw(pic2, (Gdx.graphics.getWidth()/2) - (playBtn.getWidth() / 2), Gdx.graphics.getHeight()/3);
 		batch.end();
 		if(Gdx.input.justTouched()) {
 			gsm.setState(new PlayState(gsm));
