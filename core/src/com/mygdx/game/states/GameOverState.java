@@ -40,7 +40,7 @@ public class GameOverState extends GameState {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, String.format("Score: %d", score), Gdx.graphics.getWidth()/2 - 30, Gdx.graphics.getHeight() - 200);
+		font.draw(batch, String.format("Score: %d", score*300), Gdx.graphics.getWidth()/2 - 30, Gdx.graphics.getHeight() - 200);
 		font.draw(batch, "Click to main menu", Gdx.graphics.getWidth()/2 - 100, Gdx.graphics.getHeight()/2 - 25);
 		font.draw(batch, "Press Esc to exit", Gdx.graphics.getWidth()/2 - 85, Gdx.graphics.getHeight()/3);
 		batch.end();

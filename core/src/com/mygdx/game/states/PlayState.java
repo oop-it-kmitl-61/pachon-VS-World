@@ -34,7 +34,7 @@ import com.mygdx.game.TiledObjectUtil;
 import static com.mygdx.game.Constants.PPM;
 
 import java.util.ArrayList;
-
+import com.mygdx.game.managers.*;
 public class PlayState extends GameState{
 	private boolean DEBUG = false;
 	private final float SCALE = 2.0f;
@@ -54,18 +54,19 @@ public class PlayState extends GameState{
     private World world;
     private Body player,jump,mon,mon1,mon2,mon3,wall,fly,fly2,fly3,fly4;
     
-    private int hp = 3;
+    private int hp = 1000;
     
     private int score = 0;
     // Monter
    
     //
-    protected SpriteBatch batch,batch1;
+    protected SpriteBatch batch,batch1 ,hud_batch;
     private Sprite pic,pic2;
     private Texture tex,tex2;
     public BitmapFont font;
     private crytal c1;
     private ArrayList<crytal> ac;
+    private Hud hud;
 //    playstate like create class
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
@@ -106,6 +107,9 @@ public class PlayState extends GameState{
       camera.position.x = (float) (7.5625 *PPM);
 
       batch1 = new SpriteBatch();
+      hud_batch = new SpriteBatch();
+      hud = new Hud(hud_batch);
+      hud.setWorldTimer(120);
       ac = new ArrayList();
       c1 = new crytal(450, 90);
       ac.add(c1);
@@ -128,6 +132,7 @@ public class PlayState extends GameState{
 	public void update(float delta) {
 		// TODO Auto-generated method stub
       world.step(1 / 60f, 6, 2);
+      hud.update(delta);
       cameraUpdate();
       tmr.setView(camera);
       batch1.setProjectionMatrix(camera.combined);
@@ -179,8 +184,11 @@ public class PlayState extends GameState{
     	b4.batch((float)25, (float)20, (float)9.10604, (float)19.35604);
     	
     	pachon.batch();
-    	
-    	
+    	hud_batch.setProjectionMatrix(hud.stage.getCamera().combined);
+    	hud.stage.draw();
+        if(hud.isTimeUp() == true) {
+        	gsm.setState(new GameOverState(gsm));
+        }
     	world.setContactListener(new ContactListener() {
 			@Override
 			public void beginContact(Contact contact) {
@@ -227,8 +235,7 @@ public class PlayState extends GameState{
         });
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
-        
-        System.out.println(pachon.getpo()+" "+pachon.position().getPosition());
+//        System.out.println(pachon.getpo()+" "+pachon.position().getPosition());
  
         
         if(DEBUG) {
@@ -239,6 +246,7 @@ public class PlayState extends GameState{
         		
         		
         		score += ac.get(i).batch(false);
+        		hud.addScore(score);
         		ac.remove(i);
         	}
         	else{
@@ -246,7 +254,7 @@ public class PlayState extends GameState{
         	}
         	
         }
-        System.out.println("Your Score ="+score);
+//        System.out.println("Your Score ="+score);
         GameOverState.getScore(score);
 	}
 

@@ -1,5 +1,7 @@
 package com.mygdx.game.managers;
 
+import java.io.Console;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,62 +16,49 @@ import com.badlogic.gdx.utils.viewport.*;
 
 public class Hud implements Disposable{
 	
-	//Scene2D.ui Stage and its own Viewport for HUD
     public Stage stage;
     private Viewport viewport;
 	
-    //Mario score/time Tracking Variables
     private static Integer worldTimer;
     private static boolean timeUp; // true when the world timer reaches 0
     private static float timeCount;
     private static Integer score;
     
-  //Scene2D widgets
     private static Label countdownLabel;
     private static Label scoreLabel;
     private Label timeLabel;
-    private Label levelLabel;
+    private Label tulabel;
     private Label worldLabel;
     private Label marioLabel;
 
     public Hud(SpriteBatch sb){
-        //define our tracking variables
-        worldTimer = 300;
+        worldTimer = 120;
         timeCount = 0;
         score = 0;
        
 
-        //setup the HUD viewport using a new camera seperate from our gamecam
-        //define our stage using that viewport and our games spritebatch
         viewport = new FitViewport(840, 600, new OrthographicCamera());
         stage = new Stage(viewport, sb);
 
-        //define a table used to organize our hud's labels
         Table table = new Table();
-        //Top-Align table
         table.top();
-        //make the table fill the entire stage
         table.setFillParent(true);
 
-        //define our labels using the String, and a Label style consisting of a font and color
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        scoreLabel =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        scoreLabel =new Label(String.format("%03d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        tulabel = new Label("Up Right Left  key to play", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        worldLabel = new Label("Pach0n VS World", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        marioLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(marioLabel).expandX().padTop(10);
         table.add(worldLabel).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
-        //add a second row to our table
         table.row();
         table.add(scoreLabel).expandX();
-        table.add(levelLabel).expandX();
+        table.add(tulabel).expandX();
         table.add(countdownLabel).expandX();
 
-        //add our table to the stage
         stage.addActor(table);
 
     }
@@ -80,16 +69,34 @@ public class Hud implements Disposable{
             worldTimer--;
             countdownLabel.setText(String.format("%03d", worldTimer));
             timeCount = 0;
+            timeUp = (worldTimer == 0) ? true: false;
+            System.out.println(timeUp);
         }
     }
 
     public static void addScore(int value){
-        score += value;
-        scoreLabel.setText(String.format("%06d", score));
+        score = value;
+        scoreLabel.setText(String.format("%03d", score));
     }
 
     @Override
     public void dispose() { stage.dispose(); }
+
+	public static Integer getWorldTimer() {
+		return worldTimer;
+	}
+
+	public static void setWorldTimer(Integer worldTimer) {
+		Hud.worldTimer = worldTimer;
+	}
+
+	public static boolean isTimeUp() {
+		return timeUp;
+	}
+
+	public static void setTimeUp(boolean timeUp) {
+		Hud.timeUp = timeUp;
+	}
     
 
 }
