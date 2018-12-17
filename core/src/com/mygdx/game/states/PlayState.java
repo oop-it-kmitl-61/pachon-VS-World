@@ -24,7 +24,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.managers.GameStateManager;
-
+import com.mygdx.game.managers.Hud;
 import com.mygdx.game.managers.Player;
 import com.mygdx.game.managers.crytal;
 import com.mygdx.game.managers.jumpAA;
@@ -32,6 +32,7 @@ import com.mygdx.game.managers.mosterA;
 import com.mygdx.game.managers.mosterB;
 import com.mygdx.game.TiledObjectUtil;
 import static com.mygdx.game.Constants.PPM;
+import static com.mygdx.game.Constants.Score;
 
 import java.util.ArrayList;
 
@@ -43,22 +44,22 @@ public class PlayState extends GameState{
     
     
     private Player pachon;
-    private mosterA p1,p2,p3,p4,wall1;
+    private mosterA p1,p2,p3,p4,p7,p8,p9,p0,wall1;
     private ArrayList<mosterA> ma;
     private mosterB b1,b2,b3,b4,b5,b6,b7,b8;
     
-    private jumpAA p5;
-    
+    private jumpAA p5,p6;
+    private boolean ck = true;
     private ArrayList<mosterB> mb;
     private Box2DDebugRenderer b2dr;
     private World world;
-    private Body player,jump,mon,mon1,mon2,mon3,wall,fly,fly2,fly3,fly4;
+    private Body player,jump,jump2,mon,mon1,mon2,mon3,mon4,mon5,mon6,mon7,wall,fly,fly2,fly3,fly4,fly5,fly6,t;
     
     private int hp = 3;
     
     private int score = 0;
-    // Monter
-   
+    // Score
+    private Hud hud;
     //
     protected SpriteBatch batch,batch1;
     private Sprite pic,pic2;
@@ -74,45 +75,67 @@ public class PlayState extends GameState{
       
       
       player = createBox(242, 58,32, 50, false);
+      t = sc(21,47,32, 50, false);
       
       mon = createBoxm(777, 185,32, 42, false);
       mon1 = createBoxm(750,409,32,42,false);
       mon2 = createBoxm(512,576,32,42,false);
       mon3 = createBoxm(832,576,32,42,false);
+      mon4 = createBoxm(448,1216,32,42,false);
       
-      
-      fly = createBoxm(1466,271,52,33,false);
+      fly = createBoxm(1400,271,52,33,false);
       fly2 = createBoxm(1408,576,52,33,false);
       fly3 = createBoxm(96,832,52,33,false);
       fly4 = createBoxm(288,832,52,33,false);
-      
+      fly5 = createBoxm(1152,850,52,33,false);
+      fly6 = createBoxm(1024,1504,52,33,false);
       wall = createwall(465,40,10000000,1,true);
       
       jump = createjump(1248,590,50,29,true);
+      jump2 = createjump(1440,906,50,29,true);
       
       p1 = new mosterA(mon);
       p2 = new mosterA(mon1);
       p3 = new mosterA(mon2);
       p4 = new mosterA(mon3);
-       
+      p7 = new mosterA(mon4);
+      
+      
       p5 = new jumpAA(jump);
+      p6 = new jumpAA(jump2);
       
       b2 = new mosterB(fly);
       b1 = new mosterB(fly2);
       b3 = new mosterB(fly3);
       b4 = new mosterB(fly4);
+      b5 = new mosterB(fly5);
+      b6 = new mosterB(fly6);
       
       wall1 = new mosterA(wall);
       camera.position.x = (float) (7.5625 *PPM);
 
       batch1 = new SpriteBatch();
+      hud = new Hud(batch1);
+      
       ac = new ArrayList();
       c1 = new crytal(450, 90);
       ac.add(c1);
-      c1 = new crytal(1312,192);
+      c1 = new crytal(1312,210);
       ac.add(c1);
-      
-      
+      c1 = new crytal(832,180);
+      ac.add(c1);
+      c1 = new crytal(1376,470);
+      ac.add(c1);
+      c1 = new crytal(1440,736);
+      ac.add(c1);
+      c1 = new crytal(1536,736);
+      ac.add(c1);
+      c1 = new crytal(416,426);
+      ac.add(c1);
+      c1 = new crytal(576,1216);
+      ac.add(c1);
+      c1 = new crytal(800,384);
+      ac.add(c1);
       pachon = new Player(player);
       
       
@@ -135,18 +158,20 @@ public class PlayState extends GameState{
       pachon.batch1().setProjectionMatrix(camera.combined);
       
       p5.batch1().setProjectionMatrix(camera.combined);
-      
+      p6.batch1().setProjectionMatrix(camera.combined);
       p1.batch1().setProjectionMatrix(camera.combined);
       p2.batch1().setProjectionMatrix(camera.combined);
       p3.batch1().setProjectionMatrix(camera.combined);
       p4.batch1().setProjectionMatrix(camera.combined);
+      p7.batch1().setProjectionMatrix(camera.combined);
+      
       
       b1.batch1().setProjectionMatrix(camera.combined);
       b2.batch1().setProjectionMatrix(camera.combined);
       b3.batch1().setProjectionMatrix(camera.combined);
       b4.batch1().setProjectionMatrix(camera.combined);
-      
-      
+      b5.batch1().setProjectionMatrix(camera.combined);
+      b6.batch1().setProjectionMatrix(camera.combined);
       for(int i = 0;i<ac.size();i++) {
     	  ac.get(i).batch1().setProjectionMatrix(camera.combined);;
       }
@@ -170,41 +195,56 @@ public class PlayState extends GameState{
     	p2.batch((float)23.442413,(float)28.409721,true);
     	p3.batch((float) 16.13064,(float)24, false);
     	p4.batch((float) 27,(float)33.4, false);
+    	p7.batch((float) 14.047954,(float)22.706402, false);
     	
-    	p5.batch();
+    	p5.batch(true);
+    	p6.batch(true);
     	
-    	b1.batch((float)14.796248, (float)25.078955,(float) 44.18165, (float)44.18165);
+    	b1.batch((float)14.796248, (float)25.078955,(float) 43, (float)44);
     	b2.batch((float)7.910124, (float)9.689845,(float)43.037514, (float)45.13125);
     	b3.batch((float)12.796248, (float)26.256123, (float)3.9673734, (float)3.98);
     	b4.batch((float)25, (float)20, (float)9.10604, (float)19.35604);
-    	
+    	b5.batch((float)26, (float)31, (float)9.10604, (float)19.35604);
+    	b6.batch((float)43.94704, (float)47.121815, (float)32.31839, (float)35.48501);
     	pachon.batch();
     	
-    	
+    	batch.begin();
+    	hud.update(Gdx.graphics.getDeltaTime());
+    	hud.stage.draw();
+    	batch.end();
+//    	System.out.println(pachon.position().getPosition());
     	world.setContactListener(new ContactListener() {
 			@Override
 			public void beginContact(Contact contact) {
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "monster" ) {
 					hp -=1;
-					System.out.println("hp = "+hp);
+					
 					
 					
 				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "j" ) {
+					pachon.setcj();
 					pachon.setjump();
 					
 					
+					
 				}
+				
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "wall" ) {
-					System.out.println("Now Death water");
+					
 					hp=0;
 					gsm.setState(new GameOverState(gsm));
+
 				}
 				
 			if(hp == 0) {
-				System.out.println("deah because 0 Play new Game");
+				
 				gsm.setState(new GameOverState(gsm));
 				}	
+			if(Hud.timeUp == true) {
+				
+				gsm.setState(new GameOverState(gsm));
+				}
 			}
 
 			@Override
@@ -225,10 +265,12 @@ public class PlayState extends GameState{
 				
 			}
         });
+    	p5.batch(!ck);
+    	
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
         
-        System.out.println(pachon.getpo()+" "+pachon.position().getPosition());
+        
  
         
         if(DEBUG) {
@@ -238,16 +280,17 @@ public class PlayState extends GameState{
         	if(ac.get(i).getpo().isCollinear(pachon.getpo())) {
         		
         		
-        		score += ac.get(i).batch(false);
+        		ac.get(i).batch(false);
         		ac.remove(i);
         	}
         	else{
-        		score += ac.get(i).batch(true);
+        		ac.get(i).batch(true);
         	}
         	
         }
-        System.out.println("Your Score ="+score);
-        GameOverState.getScore(score);
+      
+        hud.addScore(Score);
+        
 	}
 
 	@Override
@@ -377,7 +420,28 @@ public class PlayState extends GameState{
         shape.dispose();
         return pBody;
     }
-    
+    public Body sc(int x, int y, int width, int height, boolean isStatic) {
+        Body pBody;
+        BodyDef def = new BodyDef();
+
+        if(isStatic)
+            def.type = BodyDef.BodyType.StaticBody;
+        else
+            def.type = BodyDef.BodyType.DynamicBody;
+
+        def.position.set(x / PPM, y / PPM);
+        def.fixedRotation = true;
+        pBody = world.createBody(def);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width / 2 / PPM, height / 2 / PPM);
+        pBody.createFixture(shape, 0.0f);
+        pBody.setUserData("sc");
+        
+  
+        shape.dispose();
+        return pBody;
+    }
   public SpriteBatch getBatch() {
 	return batch;
   }

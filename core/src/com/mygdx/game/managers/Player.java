@@ -52,22 +52,25 @@ public class Player {
         if(player.getLinearVelocity().y == 0) {
         	cj=0;
         } 
-        if(player.getLinearVelocity().y == 0 || cj == 0) {
+       if(player.getLinearVelocity().y == 0 || cj == 0) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
         	
             player.applyForceToCenter(0, 600, false);
             cj++;
         }
+       }
         
-        }
         if(player.getLinearVelocity().y != 0) {i = 2;}
         else if(player.getLinearVelocity().y == 0 && player.getLinearVelocity().x != 0 ) {i = 1;}
         else {i=0;}
         
         player.setLinearVelocity(horizontalForce * 5, player.getLinearVelocity().y);
     }
+	public void setcj() {
+		this.cj = 0;
+	}
 	public void setjump() {
-		player.setLinearVelocity(player.getLinearVelocity().x, 20);
+		player.setLinearVelocity(player.getLinearVelocity().x, 10);
 	}
 	public void update(float delta) {
 		// TODO Auto-generated method stub

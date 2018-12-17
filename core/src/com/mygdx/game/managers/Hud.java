@@ -18,9 +18,9 @@ public class Hud implements Disposable{
     public Stage stage;
     private Viewport viewport;
 	
-    //Mario score/time Tracking Variables
+    //Pachon score/time Tracking Variables
     private static Integer worldTimer;
-    private static boolean timeUp; // true when the world timer reaches 0
+    public static boolean timeUp; // true when the world timer reaches 0
     private static float timeCount;
     private static Integer score;
     
@@ -38,7 +38,7 @@ public class Hud implements Disposable{
         timeCount = 0;
         score = 0;
        
-
+        sb = new SpriteBatch();
         //setup the HUD viewport using a new camera seperate from our gamecam
         //define our stage using that viewport and our games spritebatch
         viewport = new FitViewport(840, 600, new OrthographicCamera());
@@ -55,9 +55,9 @@ public class Hud implements Disposable{
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         scoreLabel =new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelLabel = new Label("Pachon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("WORLD", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        marioLabel = new Label("MARIO", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        marioLabel = new Label("Pachon", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(marioLabel).expandX().padTop(10);
@@ -74,17 +74,21 @@ public class Hud implements Disposable{
 
     }
     
-    public static void update(float dt){
+    public void update(float dt){
         timeCount += dt;
-        if(timeCount >= 1){
-            worldTimer--;
+        if(timeCount >= 1) {
+        	if(worldTimer > 0) {
+        		worldTimer--;
+        	} else {
+        		timeUp = true;
+        	}
             countdownLabel.setText(String.format("%03d", worldTimer));
             timeCount = 0;
         }
     }
 
-    public static void addScore(int value){
-        score += value;
+    public void addScore(int value){
+        score = value;
         scoreLabel.setText(String.format("%06d", score));
     }
 
