@@ -37,7 +37,7 @@ public class Hud implements Disposable{
         worldTimer = 300;
         timeCount = 0;
         score = 0;
-
+       
 
         //setup the HUD viewport using a new camera seperate from our gamecam
         //define our stage using that viewport and our games spritebatch

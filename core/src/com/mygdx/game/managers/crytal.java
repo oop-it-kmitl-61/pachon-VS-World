@@ -21,7 +21,7 @@ public class crytal {
 		this.y = y;
 		vc = new Vector2();
 		batch = new SpriteBatch();
-		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\crystal.png");
+		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\cr2.png");
 		
 		
 		cry = new Animation(new TextureRegion(tex),28,0.1f);
