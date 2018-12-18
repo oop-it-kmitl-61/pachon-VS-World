@@ -62,7 +62,7 @@ public class Hud implements Disposable{
         countdownLabel.setFontScale(2);
         scoreLabel.setFontScale(2);
         timeLabel.setFontScale(2);
-        levelLabel.setFontScale(2);
+        levelLabel.setFontScale(1);
         worldLabel.setFontScale(2);
         pachonLabel.setFontScale(2);
 
