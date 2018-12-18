@@ -32,15 +32,12 @@ public class GameOverState extends GameState {
 		batch = new SpriteBatch();
 		skin = new Skin(Gdx.files.internal("..\\core\\assets\\gdx-skins-master\\flat-earth\\skin\\flat-earth-ui.json"));
 		tb = new TextButton("Main Menu", skin);
-		tb2 = new TextButton("Submit", skin);
-		tb3 = new TextButton("Exit", skin);
+		tb2 = new TextButton("Exit", skin);
 		tb.setSize(200, 60);
 		tb2.setSize(200, 60);
-		tb3.setSize(200, 60);
 		
-		tb.setPosition(120, 100);
-		tb2.setPosition(330, 100);
-		tb3.setPosition(540, 100);
+		tb.setPosition(210, 100);
+		tb2.setPosition(420, 100);
 		tb.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -52,7 +49,7 @@ public class GameOverState extends GameState {
                 return true;
             }
         });
-		tb3.addListener(new InputListener(){
+		tb2.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
             	Gdx.app.exit();
@@ -67,7 +64,6 @@ public class GameOverState extends GameState {
 		Gdx.input.setInputProcessor(stage);
 		stage.addActor(tb);
 		stage.addActor(tb2);
-		stage.addActor(tb3);
 		
 		initFonts();
 		font48.setColor(Color.WHITE);

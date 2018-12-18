@@ -99,13 +99,15 @@ public class PlayState extends GameState{
       mon4 = createBoxm(448,1216,32,42,false);
       //boss
       ab = new ArrayList();
-      no = new bomp(1326,1070);
+      no = new bomp(224,1300);
       ab.add(no);
-      no = new bomp(1376,1070);
+      no = new bomp(1490,1111);
       ab.add(no);
-      no = new bomp(256,224);
+      no = new bomp(1490,1525);
       ab.add(no);
-      no = new bomp(300,90);
+      no = new bomp(256,225);
+      ab.add(no);
+      no = new bomp(128,225);
       ab.add(no);
       
       //
@@ -152,16 +154,25 @@ public class PlayState extends GameState{
       ac.add(c1);
       c1 = new crytal(1376,470);
       ac.add(c1);
-      
+      c1 = new crytal(800,590);
+      ac.add(c1);
       c1 = new crytal(1440,736);
       ac.add(c1);
       c1 = new crytal(1536,736);
       ac.add(c1);
-      
-      
+      c1 = new crytal(1504,900);
+      ac.add(c1);
+      c1 = new crytal(224,1170);
+      ac.add(c1);
       c1 = new crytal(576,1216);
       ac.add(c1);
+      c1 = new crytal(1536,170);
+      ac.add(c1);
       c1 = new crytal(800,384);
+      ac.add(c1);
+      c1 = new crytal(192,850);
+      ac.add(c1);
+      c1 = new crytal(1408,1413);
       ac.add(c1);
       pachon = new Player(player);
  
@@ -249,24 +260,13 @@ public class PlayState extends GameState{
     	batch.end();
     	
     	shp.begin();
-    	int val = 10;
-    	for(int i = 0;i< hp;i++) {
-    		shp.draw(hpp, val , 10,40,36);
-    		val += 40;
+    	int fa = 10;
+    	for(int qe = 0;qe<hp;qe++) {
+    		
+    		shp.draw(hpp, fa , 10,40,36);
+    		fa+=40;
     	}
-//    	if(hp==3) {
-//    	shp.draw(hpp, 10 , 10,40,36);
-//    	shp.draw(hpp, 50 , 10,40,36);
-//    	shp.draw(hpp, 90 , 10,40,36);
-//    	}
-//    	else if(hp==2) {
-//        	shp.draw(hpp, 10 , 10,40,36);
-//        	shp.draw(hpp, 50 , 10,40,36);
-//        	}
-//    	else if(hp==1) {
-//        	shp.draw(hpp, 10 , 10,40,36);
-//        	
-//        	}
+    	
     	
     	shp.end();
     	world.setContactListener(new ContactListener() {
@@ -340,7 +340,7 @@ public class PlayState extends GameState{
         b2dr.render(world, camera.combined.scl(PPM));
         }
         for(int i = 0;i<ac.size();i++) {
-        	if(ac.get(i).getpo().isCollinear(pachon.getpo())) {
+        	if(ac.get(i).getpo().epsilonEquals((pachon.getpo()))) {
         		
         		
         		ac.get(i).batch(false);
@@ -352,7 +352,7 @@ public class PlayState extends GameState{
         	
         }
         for(int i = 0;i<ab.size();i++) {
-        	if(ab.get(i).getpo().isCollinear(pachon.getpo())) {
+        	if(ab.get(i).getpo().epsilonEquals((pachon.getpo()))) {
         		
         		
         		hp += ab.get(i).batch(false);

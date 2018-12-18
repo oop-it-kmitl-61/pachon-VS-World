@@ -31,14 +31,14 @@ public class Pachon extends Game {
     private GameStateManager gsm;
     public SpriteBatch batch;
   
-    private Music music;
+    public static Music music;
     @Override
     public void create () {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         music = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\music.mp3"));
 		music.setLooping(true);
-		music.setVolume(0.1f); 
+		music.setVolume(0.1f);
 		music.play();
 		 
         camera = new OrthographicCamera();       

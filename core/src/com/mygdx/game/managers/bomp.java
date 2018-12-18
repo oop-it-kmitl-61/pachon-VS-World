@@ -9,11 +9,13 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -29,7 +31,7 @@ public class bomp {
 	private int j = 0;
 	private ArrayList<String> a;
 	private ArrayList<String> b;
-	public BitmapFont font48;
+	public BitmapFont font16;
 	public bomp(float x,float y) {
 		music2 = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\hit.wav"));
 	      music2.setLooping(false);
@@ -56,6 +58,26 @@ public class bomp {
 		a.add("Struggle");
 		a.add("Temporary");
 		b = new ArrayList();
+		a.add("Hello");
+		b.add("Abandon");
+		b.add("Ambassador");
+		b.add("Announce");
+		b.add("Buffet");
+		b.add("Calendar");
+		b.add("Disappear");
+		b.add("Economy");
+		b.add("Fortune");
+		b.add("Fragment");
+		b.add("Hostile");
+		b.add("Independent");
+		b.add("Intelligent");
+		b.add("Magazine");
+		b.add("Massage");
+		b.add("Necessary");
+		b.add("Photograph");
+		b.add("Refrigerator");
+		b.add("Struggle");
+		b.add("Temporary");
 		b.add("Helow");
 		b.add("Abondan");
 		b.add("Ambasdor");
@@ -78,8 +100,7 @@ public class bomp {
 		b.add("Tempolary");
 		
 		this.word = b.get(i.nextInt(b.size()));
-	
-		font48 = new BitmapFont();
+
 		music = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\crystal.wav"));
 		music.setLooping(false);
 		music.setVolume(0.1f);
@@ -90,7 +111,7 @@ public class bomp {
 		batch = new SpriteBatch();
 		tex = new Texture("..\\core\\assets\\img\\Players\\Player Green\\bomp.png");
 		
-		
+		initFonts();
 		cry = new Animation(new TextureRegion(tex),4,0.4f);
 
 		
@@ -108,7 +129,7 @@ public class bomp {
 		
 		if(q==true) {
 		batch.begin();
-		font48.draw(batch, word,x,y);
+		font16.draw(batch, word,x,y);
 		cry.update(Gdx.graphics.getDeltaTime());
 		batch.draw(cry.getFrame(), x, y);
 		
@@ -124,7 +145,6 @@ public class bomp {
 					return 0;
 				}
 				else {
-					Score -= 50;
 					i = -1;
 					music2.play();
 					return i = -1;
@@ -134,6 +154,16 @@ public class bomp {
 		}
 		
 	}
+	
+	public void initFonts() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("..\\core\\assets\\img\\fonts\\Arcon.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		
+		params.size = 16;
+		params.color = Color.WHITE;
+		font16 = generator.generateFont(params);
+	}
+	
 	public SpriteBatch batch1() {
 		return batch;
 	}
