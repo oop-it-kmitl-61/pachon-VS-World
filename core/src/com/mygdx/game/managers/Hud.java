@@ -57,7 +57,7 @@ public class Hud implements Disposable{
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("Use Up Right Left and Down keys to play", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("Pach0n VS World", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        pachonLabel = new Label("Pach0n", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        pachonLabel = new Label("Score", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         
         countdownLabel.setFontScale(2);
         scoreLabel.setFontScale(2);
