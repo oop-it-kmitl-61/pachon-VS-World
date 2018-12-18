@@ -62,7 +62,7 @@ public class PlayState extends GameState{
     private World world;
     private Body boss,player,jump,jump2,mon,mon1,mon2,mon3,mon4,mon5,mon6,mon7,wall,fly,fly2,fly3,fly4,fly5,fly6,t;
     
-    private int hp = 3;
+    private int hp = 5;
     private ArrayList<bomp> ab;
     private  bomp no;
     public static int score = 0;
@@ -249,19 +249,24 @@ public class PlayState extends GameState{
     	batch.end();
     	
     	shp.begin();
-    	if(hp==3) {
-    	shp.draw(hpp, 10 , 10,40,36);
-    	shp.draw(hpp, 50 , 10,40,36);
-    	shp.draw(hpp, 90 , 10,40,36);
+    	int val = 10;
+    	for(int i = 0;i< hp;i++) {
+    		shp.draw(hpp, val , 10,40,36);
+    		val += 40;
     	}
-    	else if(hp==2) {
-        	shp.draw(hpp, 10 , 10,40,36);
-        	shp.draw(hpp, 50 , 10,40,36);
-        	}
-    	else if(hp==1) {
-        	shp.draw(hpp, 10 , 10,40,36);
-        	
-        	}
+//    	if(hp==3) {
+//    	shp.draw(hpp, 10 , 10,40,36);
+//    	shp.draw(hpp, 50 , 10,40,36);
+//    	shp.draw(hpp, 90 , 10,40,36);
+//    	}
+//    	else if(hp==2) {
+//        	shp.draw(hpp, 10 , 10,40,36);
+//        	shp.draw(hpp, 50 , 10,40,36);
+//        	}
+//    	else if(hp==1) {
+//        	shp.draw(hpp, 10 , 10,40,36);
+//        	
+//        	}
     	
     	shp.end();
     	world.setContactListener(new ContactListener() {
