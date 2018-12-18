@@ -27,8 +27,18 @@ public class GameOverState extends GameState {
     private TextButton tb, tb2, tb3;
     private Skin skin;
     private Stage stage;
-	public GameOverState(final GameStateManager gsm) {
+    private String Gamtend_text = "Game Over";
+	public String getGamtend_text() {
+		return Gamtend_text;
+	}
+
+	public void setGamtend_text(String gamtend_text) {
+		Gamtend_text = gamtend_text;
+	}
+
+	public GameOverState(final GameStateManager gsm, String Gameend_text) {
 		super(gsm);
+		this.Gamtend_text = Gameend_text;
 		batch = new SpriteBatch();
 		skin = new Skin(Gdx.files.internal("..\\core\\assets\\gdx-skins-master\\flat-earth\\skin\\flat-earth-ui.json"));
 		tb = new TextButton("Main Menu", skin);
@@ -81,7 +91,7 @@ public class GameOverState extends GameState {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font48.draw(batch, "Game Over", Gdx.graphics.getWidth()/2 - 125, Gdx.graphics.getHeight()/2 + 150);
+		font48.draw(batch, Gamtend_text, Gdx.graphics.getWidth()/2 - 125, Gdx.graphics.getHeight()/2 + 150);
 		font48.draw(batch, String.format("Score: %d", Score), Gdx.graphics.getWidth()/2 - 100, Gdx.graphics.getHeight()/2 + 50);
 		batch.end();
 		stage.draw();

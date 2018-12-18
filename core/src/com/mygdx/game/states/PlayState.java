@@ -287,24 +287,24 @@ public class PlayState extends GameState{
 					
 				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "sc" ) {
-					gsm.setState(new GameOverState(gsm));
+					gsm.setState(new GameOverState(gsm, " You win!"));
 					
 					 
 				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "wall" ) {
 					
 					hp=0;
-					gsm.setState(new GameOverState(gsm));
+					gsm.setState(new GameOverState(gsm, " Game Over"));
 					
 				}
 				
 			if(hp == 0) {
-				gsm.setState(new GameOverState(gsm));
+				gsm.setState(new GameOverState(gsm, " Game Over"));
 				
 				}	
 			if(Hud.timeUp == true) {
 				
-				gsm.setState(new GameOverState(gsm));
+				gsm.setState(new GameOverState(gsm, " Game Over"));
 				
 				}
 			
