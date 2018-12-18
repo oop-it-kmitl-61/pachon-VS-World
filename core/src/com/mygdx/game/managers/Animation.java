@@ -21,7 +21,7 @@ public class Animation {
 		maxFrameTime = cycleTime / frameCount;
 		frame = 0;
 	}
-	
+	 
 	public void update(float dt) {
 		currentFrameTime += dt;
 		if(currentFrameTime > maxFrameTime) {

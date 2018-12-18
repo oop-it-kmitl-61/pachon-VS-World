@@ -38,9 +38,9 @@ public class Pachon extends Game {
         float h = Gdx.graphics.getHeight();
         music = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\music.mp3"));
 		music.setLooping(true);
-		music.setVolume(0.1f);
+		music.setVolume(0.1f); 
 		music.play();
-		
+		 
         camera = new OrthographicCamera();       
         camera.setToOrtho(false, w / SCALE, h / SCALE);
         batch = new SpriteBatch();
@@ -53,14 +53,7 @@ public class Pachon extends Game {
     	gsm.update(Gdx.graphics.getDeltaTime());
     	gsm.render(batch);
     }
-//    @Override
-//    public void resize(int width, int height) {
-//
-//    	gsm.resize((int) (width/ SCALE), (int)(height/SCALE));
-//    	camera.setToOrtho(false, width / SCALE, height / SCALE);
-//    	camera.position.x = 242;
-//    	camera.position.y = 150;
-//    }
+ 
 
     @Override
     public void dispose() {

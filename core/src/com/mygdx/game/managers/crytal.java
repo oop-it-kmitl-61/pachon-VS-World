@@ -3,6 +3,7 @@ package com.mygdx.game.managers;
 import static com.mygdx.game.Constants.PPM;
 import static com.mygdx.game.Constants.Score;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,7 +17,13 @@ public class crytal {
 	private Animation cry;
 	private Vector2  vc;
 	private SpriteBatch batch;
+	private Music music;
+	
 	public crytal(float x,float y) {
+		music = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\crystal.wav"));
+		music.setLooping(false);
+		music.setVolume(0.1f);
+		
 		this.x = x;
 		this.y = y;
 		vc = new Vector2();
@@ -47,6 +54,7 @@ public class crytal {
 		return 0;
 		}
 		else {
+			music.play();
 			return Score += 50; 
 		}
 		
@@ -54,6 +62,7 @@ public class crytal {
 	public SpriteBatch batch1() {
 		return batch;
 	}
+	
 	
 	public void dispose() {
 		tex.dispose();

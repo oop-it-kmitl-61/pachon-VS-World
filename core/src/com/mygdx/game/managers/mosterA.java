@@ -50,7 +50,7 @@ public class mosterA {
         }
         else if(player.getPosition().x > x1) {
         	ck =-1;
-        	}
+        	} 
         }
         else if(a == false) {
         	Random rand = new Random();
@@ -63,7 +63,7 @@ public class mosterA {
             	}
             
         	if(n == 1) {
-        		System.out.println(n);
+        		
         		player.applyForceToCenter(0, 300, false);
         	}
         }

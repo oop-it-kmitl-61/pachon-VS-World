@@ -1,14 +1,15 @@
 package com.mygdx.game.states;
-import com.mygdx.game.managers.*;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -25,23 +26,29 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.game.managers.GameStateManager;
 import com.mygdx.game.managers.Hud;
+import com.mygdx.game.managers.boss;
 import com.mygdx.game.managers.Player;
+import com.mygdx.game.managers.bomp;
 import com.mygdx.game.managers.crytal;
 import com.mygdx.game.managers.jumpAA;
 import com.mygdx.game.managers.mosterA;
 import com.mygdx.game.managers.mosterB;
+import com.mygdx.game.managers.Animation;
 import com.mygdx.game.TiledObjectUtil;
 import static com.mygdx.game.Constants.PPM;
 import static com.mygdx.game.Constants.Score;
 
 import java.util.ArrayList;
-import com.mygdx.game.managers.*;
+
 public class PlayState extends GameState{
 	private boolean DEBUG = false;
 	private final float SCALE = 2.0f;
     private OrthogonalTiledMapRenderer tmr;
     protected TiledMap map;
     
+    private Animation ahp;
+    private Texture hpp;
+    private SpriteBatch shp;
     
     private Player pachon;
     private mosterA p1,p2,p3,p4,p7,p8,p9,p0,wall1;
@@ -53,36 +60,55 @@ public class PlayState extends GameState{
     private ArrayList<mosterB> mb;
     private Box2DDebugRenderer b2dr;
     private World world;
-    private Body player,jump,jump2,mon,mon1,mon2,mon3,mon4,mon5,mon6,mon7,wall,fly,fly2,fly3,fly4,fly5,fly6,t;
+    private Body boss,player,jump,jump2,mon,mon1,mon2,mon3,mon4,mon5,mon6,mon7,wall,fly,fly2,fly3,fly4,fly5,fly6,t;
     
-    private int hp = 1000;
-    
-    private int score = 0;
+    private int hp = 3;
+    private ArrayList<bomp> ab;
+    private  bomp no;
+    public static int score = 0;
     // Score
+    private Hud hud;
+    private Music music;
     //
-    protected SpriteBatch batch,batch1 ,hud_batch;
+    protected SpriteBatch batch,batch1;
     private Sprite pic,pic2;
     private Texture tex,tex2;
     public BitmapFont font;
     private crytal c1;
     private ArrayList<crytal> ac;
-    private Hud hud;
+    
+    private boss bo;
 //    playstate like create class
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
+	
       world = new World(new Vector2(0, -9.8f), false);
       b2dr = new Box2DDebugRenderer();
-      
-      
+      music = Gdx.audio.newMusic(Gdx.files.internal("..\\core\\assets\\hit.wav"));
+      music.setLooping(false);
+      music.setVolume(0.7f);
+      hpp = new Texture("..\\core\\assets\\img\\Players\\Player Green\\hp.png");
+      shp = new SpriteBatch();
       player = createBox(242, 58,32, 50, false);
-      t = sc(21,47,32, 50, false);
-      
+      t = sc(672,1472,32, 50, false);
+       
       mon = createBoxm(777, 185,32, 42, false);
       mon1 = createBoxm(750,409,32,42,false);
       mon2 = createBoxm(512,576,32,42,false);
       mon3 = createBoxm(832,576,32,42,false);
       mon4 = createBoxm(448,1216,32,42,false);
+      //boss
+      ab = new ArrayList();
+      no = new bomp(1326,1070);
+      ab.add(no);
+      no = new bomp(1376,1070);
+      ab.add(no);
+      no = new bomp(256,224);
+      ab.add(no);
+      no = new bomp(300,90);
+      ab.add(no);
       
+      //
       fly = createBoxm(1400,271,52,33,false);
       fly2 = createBoxm(1408,576,52,33,false);
       fly3 = createBoxm(96,832,52,33,false);
@@ -99,8 +125,8 @@ public class PlayState extends GameState{
       p3 = new mosterA(mon2);
       p4 = new mosterA(mon3);
       p7 = new mosterA(mon4);
-      
-      
+      p0 = new mosterA(t);
+       
       p5 = new jumpAA(jump);
       p6 = new jumpAA(jump2);
       
@@ -115,11 +141,10 @@ public class PlayState extends GameState{
       camera.position.x = (float) (7.5625 *PPM);
 
       batch1 = new SpriteBatch();
-      hud_batch = new SpriteBatch();
-      hud = new Hud(hud_batch);
-      hud.setWorldTimer(120);
+      hud = new Hud(batch1);
+      
       ac = new ArrayList();
-      c1 = new crytal(450, 90);
+      c1 = new crytal(410, 90);
       ac.add(c1);
       c1 = new crytal(1312,210);
       ac.add(c1);
@@ -127,18 +152,19 @@ public class PlayState extends GameState{
       ac.add(c1);
       c1 = new crytal(1376,470);
       ac.add(c1);
+      
       c1 = new crytal(1440,736);
       ac.add(c1);
       c1 = new crytal(1536,736);
       ac.add(c1);
-      c1 = new crytal(416,426);
-      ac.add(c1);
+      
+      
       c1 = new crytal(576,1216);
       ac.add(c1);
       c1 = new crytal(800,384);
       ac.add(c1);
       pachon = new Player(player);
-      
+ 
       
       font = new BitmapFont();
       tex2 = new Texture("..\\core\\assets\\img\\Players\\Player Green\\background.png");
@@ -152,7 +178,6 @@ public class PlayState extends GameState{
 	public void update(float delta) {
 		// TODO Auto-generated method stub
       world.step(1 / 60f, 6, 2);
-      hud.update(delta);
       cameraUpdate();
       tmr.setView(camera);
       batch1.setProjectionMatrix(camera.combined);
@@ -166,7 +191,7 @@ public class PlayState extends GameState{
       p3.batch1().setProjectionMatrix(camera.combined);
       p4.batch1().setProjectionMatrix(camera.combined);
       p7.batch1().setProjectionMatrix(camera.combined);
-      
+      p0.batch1().setProjectionMatrix(camera.combined);
       
       b1.batch1().setProjectionMatrix(camera.combined);
       b2.batch1().setProjectionMatrix(camera.combined);
@@ -174,8 +199,13 @@ public class PlayState extends GameState{
       b4.batch1().setProjectionMatrix(camera.combined);
       b5.batch1().setProjectionMatrix(camera.combined);
       b6.batch1().setProjectionMatrix(camera.combined);
+      
+      
       for(int i = 0;i<ac.size();i++) {
     	  ac.get(i).batch1().setProjectionMatrix(camera.combined);;
+      }
+      for(int i = 0;i<ab.size();i++) {
+    	  ab.get(i).batch1().setProjectionMatrix(camera.combined);;
       }
 	}
 
@@ -197,8 +227,11 @@ public class PlayState extends GameState{
     	p2.batch((float)23.442413,(float)28.409721,true);
     	p3.batch((float) 16.13064,(float)24, false);
     	p4.batch((float) 27,(float)33.4, false);
-    	p7.batch((float) 14.047954,(float)22.706402, false);
+    	p7.batch((float) 14.047954,(float)22.706402, true);
     	
+  
+    	
+    	System.out.println(pachon.getpo());
     	p5.batch(true);
     	p6.batch(true);
     	
@@ -210,46 +243,68 @@ public class PlayState extends GameState{
     	b6.batch((float)43.94704, (float)47.121815, (float)32.31839, (float)35.48501);
     	pachon.batch();
     	
-    	hud_batch.setProjectionMatrix(hud.stage.getCamera().combined);
+    	batch.begin();
+    	hud.update(Gdx.graphics.getDeltaTime());
     	hud.stage.draw();
-        if(hud.isTimeUp() == true) {
-        	gsm.setState(new GameOverState(gsm));
-        }
-//    	System.out.println(pachon.position().getPosition());
+    	batch.end();
+    	
+    	shp.begin();
+    	if(hp==3) {
+    	shp.draw(hpp, 10 , 10,40,36);
+    	shp.draw(hpp, 50 , 10,40,36);
+    	shp.draw(hpp, 90 , 10,40,36);
+    	}
+    	else if(hp==2) {
+        	shp.draw(hpp, 10 , 10,40,36);
+        	shp.draw(hpp, 50 , 10,40,36);
+        	}
+    	else if(hp==1) {
+        	shp.draw(hpp, 10 , 10,40,36);
+        	
+        	}
+    	
+    	shp.end();
     	world.setContactListener(new ContactListener() {
 			@Override
 			public void beginContact(Contact contact) {
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "monster" ) {
 					hp -=1;
-					
-					
+					music.play();
+		
 					
 				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "j" ) {
 					pachon.setcj();
 					pachon.setjump();
+					 
 					
 					
 					
 				}
-				
+				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "sc" ) {
+					gsm.setState(new GameOverState(gsm));
+					
+					 
+				}
 				if(contact.getFixtureA().getBody().getUserData() == "Player" && contact.getFixtureB().getBody().getUserData() == "wall" ) {
 					
 					hp=0;
 					gsm.setState(new GameOverState(gsm));
-
+					
 				}
 				
 			if(hp == 0) {
-				
 				gsm.setState(new GameOverState(gsm));
+				
 				}	
 			if(Hud.timeUp == true) {
 				
 				gsm.setState(new GameOverState(gsm));
+				
 				}
+			
 			}
-
+			
 			@Override
 			public void endContact(Contact contact) {
 				// TODO Auto-generated method stub
@@ -272,7 +327,8 @@ public class PlayState extends GameState{
     	
         update(Gdx.graphics.getDeltaTime());
         pachon.batch();
-//        System.out.println(pachon.getpo()+" "+pachon.position().getPosition());
+        
+        
  
         
         if(DEBUG) {
@@ -282,8 +338,7 @@ public class PlayState extends GameState{
         	if(ac.get(i).getpo().isCollinear(pachon.getpo())) {
         		
         		
-        		score += ac.get(i).batch(false);
-        		hud.addScore(score);
+        		ac.get(i).batch(false);
         		ac.remove(i);
         	}
         	else{
@@ -291,19 +346,31 @@ public class PlayState extends GameState{
         	}
         	
         }
-//        System.out.println("Your Score ="+score);
+        for(int i = 0;i<ab.size();i++) {
+        	if(ab.get(i).getpo().isCollinear(pachon.getpo())) {
+        		
+        		
+        		hp += ab.get(i).batch(false);
+        		ab.remove(i);
+        	}
+        	else{
+        		ab.get(i).batch(true);
+        	}
+        	
+        }
+       if(Score<0) {Score =0;}
+        hud.addScore(Score);
+        
 	}
 
 	@Override
 	public void dispose() {
 		tex2.dispose();
 		map.dispose();
-      world.dispose();
-      b2dr.dispose();
-      pachon.dispose();
-      tmr.dispose();
-      map.dispose();
-     
+		world.dispose();
+		b2dr.dispose();
+		tmr.dispose();
+		map.dispose();
 	}
 	
 //    @Override
@@ -425,9 +492,7 @@ public class PlayState extends GameState{
         Body pBody;
         BodyDef def = new BodyDef();
 
-        if(isStatic)
-            def.type = BodyDef.BodyType.StaticBody;
-        else
+        
             def.type = BodyDef.BodyType.DynamicBody;
 
         def.position.set(x / PPM, y / PPM);

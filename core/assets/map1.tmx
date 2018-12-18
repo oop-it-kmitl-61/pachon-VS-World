@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="178">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="21" nextobjectid="184">
  <tileset firstgid="1" source="Tile_map.tsx"/>
  <tileset firstgid="1057" source="tile_map2.tsx"/>
  <group id="4" name="grass">
@@ -241,6 +241,15 @@
   <object id="172" x="1377" y="193" width="92" height="62"/>
   <object id="177" x="-3" y="2">
    <polygon points="0,0 33,0 28.4167,1597 3.66667,1598"/>
+  </object>
+  <object id="178" x="1394" y="257.5">
+   <polygon points="0,0 -17,253 -19,0"/>
+  </object>
+  <object id="179" x="1600" y="-841.333" height="840"/>
+  <object id="180" x="1566.67" y="-841.333" width="33.3333" height="846.667"/>
+  <object id="181" x="-4" y="-753.333" width="32" height="754.667"/>
+  <object id="183" x="30.6667" y="0">
+   <polygon points="0,0 128,1.33333 -1.33333,721.333"/>
   </object>
  </objectgroup>
  <layer id="15" name="water" width="50" height="50">
